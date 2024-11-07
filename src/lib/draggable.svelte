@@ -151,7 +151,7 @@
 	}
 
 	.selected {
-		border-color: #3b82f6;
+		border-color: #001397;
 	}
 
 	.resize-handle {

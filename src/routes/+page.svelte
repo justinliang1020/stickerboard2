@@ -4,12 +4,15 @@
 </script>
 
 <Draggable src="rat-spinning.gif" />
-<Draggable src="rat-spinning.gif" />
+<Draggable src="windows-xp-dialog-funny.webp" />
 
 <Taskbar />
 
 <style>
 	:global(body) {
-		background: black;
+		background-image: url('windows-xp-background.jpg');
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: 100% 100%;
 	}
 </style>
