@@ -7,10 +7,10 @@
 	let x = $state(0);
 	let y = $state(0);
 	let imgEl: HTMLImageElement;
-	let startX: number;
-	let startY: number;
-	let startWidth: number;
-	let startHeight: number;
+	let mouseDownStartX: number;
+	let mouseDownStartY: number;
+	let mouseDownStartWidth: number;
+	let mouseDownStartHeight: number;
 	let width: number = $state(0);
 	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
@@ -26,14 +26,14 @@
 			isDragging = false;
 			isResizing = true;
 			activeCorner = target.dataset.corner || null;
-			startX = event.clientX;
-			startY = event.clientY;
-			startWidth = width;
-			startHeight = width;
+			mouseDownStartX = event.clientX;
+			mouseDownStartY = event.clientY;
+			mouseDownStartWidth = width;
+			mouseDownStartHeight = width;
 		} else {
 			isDragging = true;
-			startX = event.clientX - x;
-			startY = event.clientY - y;
+			mouseDownStartX = event.clientX - x;
+			mouseDownStartY = event.clientY - y;
 		}
 		isSelected = true;
 		if (!isDragging && !isResizing) {
@@ -43,11 +43,11 @@
 
 	function handleMouseMove(event: MouseEvent) {
 		if (isDragging) {
-			x = event.clientX - startX;
-			y = event.clientY - startY;
+			x = event.clientX - mouseDownStartX;
+			y = event.clientY - mouseDownStartY;
 		} else if (isResizing && activeCorner) {
-			const dx = event.clientX - startX;
-			const dy = event.clientY - startY;
+			const dx = event.clientX - mouseDownStartX;
+			const dy = event.clientY - mouseDownStartY;
 
 			switch (activeCorner) {
 				// case 'nw':
@@ -68,10 +68,11 @@
 				// 	break;
 				case 'se':
 					const ratio = Math.sqrt(
-						((startWidth + dx) / startWidth) * ((startHeight + dy) / startHeight)
+						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
+							((mouseDownStartHeight + dy) / mouseDownStartHeight)
 					);
-					width = startWidth * ratio;
-					height = startHeight * ratio;
+					width = mouseDownStartWidth * ratio;
+					height = mouseDownStartHeight * ratio;
 					break;
 			}
 		}
