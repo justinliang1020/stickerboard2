@@ -53,12 +53,16 @@
 			const originalHeight = height;
 
 			switch (activeCorner) {
-				// case 'nw':
-				// 	width = Math.max(50, startWidth - dx);
-				// 	height = Math.max(50, startHeight - dy);
-				// 	x = startX + dx + (startWidth - width);
-				// 	y = startY + dy + (startHeight - height);
-				// 	break;
+				case 'nw':
+					ratio = Math.sqrt(
+						((mouseDownStartWidth - dx) / mouseDownStartWidth) *
+							((mouseDownStartHeight - dy) / mouseDownStartHeight)
+					);
+					width = mouseDownStartWidth * ratio;
+					height = mouseDownStartHeight * ratio;
+					x -= width - originalWidth;
+					y -= height - originalHeight;
+					break;
 				case 'ne':
 					ratio = Math.sqrt(
 						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
