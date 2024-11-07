@@ -29,7 +29,7 @@
 			mouseDownStartX = event.clientX;
 			mouseDownStartY = event.clientY;
 			mouseDownStartWidth = width;
-			mouseDownStartHeight = width;
+			mouseDownStartHeight = height;
 		} else {
 			isDragging = true;
 			mouseDownStartX = event.clientX - x;
