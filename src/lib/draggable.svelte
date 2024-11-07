@@ -6,17 +6,18 @@
 	let isSelected = $state(false);
 	let x = $state(0);
 	let y = $state(0);
-	let imageSizeRatio = $state(1);
 	let imgEl: HTMLImageElement;
 	let startX: number;
 	let startY: number;
-	let naturalWidth: number = $state(0);
-	let naturalHeight: number = $state(0);
+	let startWidth: number;
+	let startHeight: number;
+	let width: number = $state(0);
+	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
 
 	$effect(() => {
-		naturalWidth = imgEl.naturalWidth;
-		naturalHeight = imgEl.naturalHeight;
+		width = imgEl.naturalWidth;
+		height = imgEl.naturalHeight;
 	});
 
 	function handleMouseDown(event: MouseEvent) {
@@ -27,6 +28,8 @@
 			activeCorner = target.dataset.corner || null;
 			startX = event.clientX;
 			startY = event.clientY;
+			startWidth = width;
+			startHeight = width;
 		} else {
 			isDragging = true;
 			startX = event.clientX - x;
@@ -64,12 +67,19 @@
 				// 	x = startX + dx + (startWidth - width);
 				// 	break;
 				case 'se':
-					imageSizeRatio =
-						((naturalWidth + dx) / naturalWidth) * ((naturalHeight + dy) / naturalHeight);
+					const ratio = Math.sqrt(
+						((startWidth + dx) / startWidth) * ((startHeight + dy) / startHeight)
+					);
+					width = startWidth * ratio;
+					height = startHeight * ratio;
 					break;
 			}
 		}
 	}
+
+	// naturalWidth = 5, ratio = 1
+	// ratio = 1, dx = 1 (x = 6)=> ratio becomes 6/5
+	// ratio = 6/5, dx = 2 (x = 8)=> ratio becomes 8/5
 
 	function handleMouseUp() {
 		isDragging = false;
@@ -93,8 +103,7 @@
 
 <div
 	class="draggable-container"
-	style="position: absolute; left: {x}px; top: {y}px; width: {naturalWidth *
-		imageSizeRatio}px; height: {naturalHeight * imageSizeRatio}px;"
+	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
 	onmousedown={handleMouseDown}
 >
 	<img
