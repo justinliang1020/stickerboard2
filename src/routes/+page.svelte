@@ -4,6 +4,7 @@
 </script>
 
 <Draggable src="rat-spinning.gif" />
+<Draggable src="frieren-icegif-5.gif" />
 <Draggable src="windows-xp-dialog-funny.webp" />
 
 <Taskbar />
