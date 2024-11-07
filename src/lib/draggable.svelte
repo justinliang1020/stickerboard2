@@ -26,13 +26,6 @@
 		isDragging = false;
 	}
 
-	function handleClick(event: MouseEvent) {
-		// Prevent deselection when clicking and dragging
-		if (!isDragging) {
-			isSelected = !isSelected;
-		}
-	}
-
 	// Handle clicking outside to deselect
 	function handleWindowClick(event: MouseEvent) {
 		// @ts-ignore
@@ -52,16 +45,8 @@
 	class="draggable-container"
 	style="position: absolute; left: {x}px; top: {y}px; cursor: move;"
 	on:mousedown={handleMouseDown}
-	on:click={handleClick}
 >
-	<img
-		{src}
-		alt={src}
-		class="draggable-image"
-		class:selected={isSelected}
-		draggable="false"
-		width="200"
-	/>
+	<img {src} alt={src} class="draggable-image" class:selected={isSelected} draggable="false" />
 </div>
 
 <style>
@@ -72,7 +57,6 @@
 
 	.draggable-image {
 		border: 2px solid transparent;
-		transition: border-color 0.2s ease;
 	}
 
 	.selected {

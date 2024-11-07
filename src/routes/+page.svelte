@@ -4,6 +4,7 @@
 </script>
 
 <Draggable src="rat-spinning.gif" />
+<Draggable src="rat-spinning.gif" />
 
 <Taskbar />
 
