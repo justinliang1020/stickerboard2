@@ -49,6 +49,8 @@
 			const dx = event.clientX - mouseDownStartX;
 			const dy = event.clientY - mouseDownStartY;
 			let ratio: number;
+			const originalWidth = width;
+			const originalHeight = height;
 
 			switch (activeCorner) {
 				// case 'nw':
@@ -57,20 +59,22 @@
 				// 	x = startX + dx + (startWidth - width);
 				// 	y = startY + dy + (startHeight - height);
 				// 	break;
-				// case 'ne':
-				// 	width = Math.max(50, startWidth + dx);
-				// 	height = Math.max(50, startHeight - dy);
-				// 	y = startY + dy + (startHeight - height);
-				// 	break;
+				case 'ne':
+					ratio = Math.sqrt(
+						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
+							((mouseDownStartHeight - dy) / mouseDownStartHeight)
+					);
+					width = mouseDownStartWidth * ratio;
+					height = mouseDownStartHeight * ratio;
+					y -= height - originalHeight;
+					break;
 				case 'sw':
 					ratio = Math.sqrt(
 						((mouseDownStartWidth - dx) / mouseDownStartWidth) *
 							((mouseDownStartHeight + dy) / mouseDownStartHeight)
 					);
-					const originalWidth = width;
 					width = mouseDownStartWidth * ratio;
 					height = mouseDownStartHeight * ratio;
-
 					x -= width - originalWidth;
 					break;
 				case 'se':
