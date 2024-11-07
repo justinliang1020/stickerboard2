@@ -77,12 +77,6 @@
 		activeCorner = null;
 	}
 
-	function handleClick(event: MouseEvent) {
-		if (!isDragging && !isResizing) {
-			isSelected = !isSelected;
-		}
-	}
-
 	function handleWindowClick(event: MouseEvent) {
 		const target = event.target as HTMLElement;
 		if (!target.closest('.draggable-container')) {
@@ -101,7 +95,7 @@
 	class="draggable-container"
 	style="position: absolute; left: {x}px; top: {y}px; width: {naturalWidth *
 		imageSizeRatio}px; height: {naturalHeight * imageSizeRatio}px;"
-	on:mousedown={handleMouseDown}
+	onmousedown={handleMouseDown}
 >
 	<img
 		{src}
