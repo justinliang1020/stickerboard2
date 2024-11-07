@@ -1,6 +1,9 @@
 <script>
 	import Taskbar from '$lib/taskbar.svelte';
+	import Draggable from '$lib/draggable.svelte';
 </script>
+
+<Draggable src="rat-spinning.gif" />
 
 <Taskbar />
 
