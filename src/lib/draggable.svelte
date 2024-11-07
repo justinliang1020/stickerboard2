@@ -48,6 +48,7 @@
 		} else if (isResizing && activeCorner) {
 			const dx = event.clientX - mouseDownStartX;
 			const dy = event.clientY - mouseDownStartY;
+			let ratio: number;
 
 			switch (activeCorner) {
 				// case 'nw':
@@ -61,13 +62,19 @@
 				// 	height = Math.max(50, startHeight - dy);
 				// 	y = startY + dy + (startHeight - height);
 				// 	break;
-				// case 'sw':
-				// 	width = Math.max(50, startWidth - dx);
-				// 	height = Math.max(50, startHeight + dy);
-				// 	x = startX + dx + (startWidth - width);
-				// 	break;
+				case 'sw':
+					ratio = Math.sqrt(
+						((mouseDownStartWidth - dx) / mouseDownStartWidth) *
+							((mouseDownStartHeight + dy) / mouseDownStartHeight)
+					);
+					const originalWidth = width;
+					width = mouseDownStartWidth * ratio;
+					height = mouseDownStartHeight * ratio;
+
+					x -= width - originalWidth;
+					break;
 				case 'se':
-					const ratio = Math.sqrt(
+					ratio = Math.sqrt(
 						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
 							((mouseDownStartHeight + dy) / mouseDownStartHeight)
 					);
