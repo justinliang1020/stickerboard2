@@ -4,6 +4,8 @@
 
 	let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	let isStartMenuOpen = false;
+	let startButton: HTMLButtonElement;
+	let startMenu: HTMLElement;
 
 	// Update clock every minute
 	onMount(() => {
@@ -13,9 +15,6 @@
 
 		// Close start menu when clicking outside
 		const handleClickOutside = (event: any) => {
-			const startMenu = document.querySelector('.start-menu');
-			const startButton = document.querySelector('.start-button');
-
 			if (
 				startMenu &&
 				!startMenu.contains(event.target) &&
@@ -40,13 +39,18 @@
 </script>
 
 <div class="taskbar">
-	<button class="start-button" class:active={isStartMenuOpen} on:click={toggleStartMenu}>
+	<button
+		class="start-button"
+		class:active={isStartMenuOpen}
+		on:click={toggleStartMenu}
+		bind:this={startButton}
+	>
 		<img src="/windows-logo.png" alt="Start" class="start-icon" />
 		<span>start</span>
 	</button>
 
 	{#if isStartMenuOpen}
-		<Startmenu />
+		<Startmenu bind:topLevelHtmlElement={startMenu} />
 	{/if}
 
 	<div class="system-tray">

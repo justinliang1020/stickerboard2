@@ -1,4 +1,8 @@
-<div class="start-menu">
+<script lang="ts">
+	let { topLevelHtmlElement = $bindable() }: { topLevelHtmlElement: HTMLElement } = $props();
+</script>
+
+<div class="start-menu" bind:this={topLevelHtmlElement}>
 	<div class="user-section">
 		<img src="/user-avatar.png" alt="User" class="user-avatar" />
 		<span class="user-name">User Name</span>
