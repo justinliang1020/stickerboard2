@@ -93,10 +93,6 @@
 		}
 	}
 
-	// naturalWidth = 5, ratio = 1
-	// ratio = 1, dx = 1 (x = 6)=> ratio becomes 6/5
-	// ratio = 6/5, dx = 2 (x = 8)=> ratio becomes 8/5
-
 	function handleMouseUp() {
 		isDragging = false;
 		isResizing = false;
@@ -117,6 +113,7 @@
 	on:click={handleWindowClick}
 />
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="draggable-container"
 	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
