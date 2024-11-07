@@ -6,13 +6,18 @@
 	let isSelected = $state(false);
 	let x = $state(0);
 	let y = $state(0);
-	let width = $state(200);
-	let height = $state(200);
+	let imageSizeRatio = $state(1);
+	let imgEl: HTMLImageElement;
 	let startX: number;
 	let startY: number;
-	let startWidth: number;
-	let startHeight: number;
+	let naturalWidth: number = $state(0);
+	let naturalHeight: number = $state(0);
 	let activeCorner: string | null = $state(null);
+
+	$effect(() => {
+		naturalWidth = imgEl.naturalWidth;
+		naturalHeight = imgEl.naturalHeight;
+	});
 
 	function handleMouseDown(event: MouseEvent) {
 		const target = event.target as HTMLElement;
@@ -22,8 +27,6 @@
 			activeCorner = target.dataset.corner || null;
 			startX = event.clientX;
 			startY = event.clientY;
-			startWidth = width;
-			startHeight = height;
 		} else {
 			isDragging = true;
 			startX = event.clientX - x;
@@ -44,25 +47,25 @@
 			const dy = event.clientY - startY;
 
 			switch (activeCorner) {
-				case 'nw':
-					width = Math.max(50, startWidth - dx);
-					height = Math.max(50, startHeight - dy);
-					x = startX + dx + (startWidth - width);
-					y = startY + dy + (startHeight - height);
-					break;
-				case 'ne':
-					width = Math.max(50, startWidth + dx);
-					height = Math.max(50, startHeight - dy);
-					y = startY + dy + (startHeight - height);
-					break;
-				case 'sw':
-					width = Math.max(50, startWidth - dx);
-					height = Math.max(50, startHeight + dy);
-					x = startX + dx + (startWidth - width);
-					break;
+				// case 'nw':
+				// 	width = Math.max(50, startWidth - dx);
+				// 	height = Math.max(50, startHeight - dy);
+				// 	x = startX + dx + (startWidth - width);
+				// 	y = startY + dy + (startHeight - height);
+				// 	break;
+				// case 'ne':
+				// 	width = Math.max(50, startWidth + dx);
+				// 	height = Math.max(50, startHeight - dy);
+				// 	y = startY + dy + (startHeight - height);
+				// 	break;
+				// case 'sw':
+				// 	width = Math.max(50, startWidth - dx);
+				// 	height = Math.max(50, startHeight + dy);
+				// 	x = startX + dx + (startWidth - width);
+				// 	break;
 				case 'se':
-					width = Math.max(50, startWidth + dx);
-					height = Math.max(50, startHeight + dy);
+					imageSizeRatio =
+						((naturalWidth + dx) / naturalWidth) * ((naturalHeight + dy) / naturalHeight);
 					break;
 			}
 		}
@@ -96,10 +99,18 @@
 
 <div
 	class="draggable-container"
-	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
+	style="position: absolute; left: {x}px; top: {y}px; width: {naturalWidth *
+		imageSizeRatio}px; height: {naturalHeight * imageSizeRatio}px;"
 	on:mousedown={handleMouseDown}
 >
-	<img {src} alt={src} class="draggable-image" class:selected={isSelected} draggable="false" />
+	<img
+		{src}
+		alt={src}
+		class="draggable-image"
+		class:selected={isSelected}
+		draggable="false"
+		bind:this={imgEl}
+	/>
 
 	{#if isSelected}
 		<div class="resize-handle nw" data-corner="nw"></div>
