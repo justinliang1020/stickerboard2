@@ -25,6 +25,7 @@
 		Array.from(items).some((item) => {
 			if (item.type.startsWith('image')) {
 				const file = item.getAsFile();
+				console.log(file);
 				if (file) processFileAndAddDraggable(file);
 				return true;
 			}
@@ -50,6 +51,27 @@
 		draggables = draggables.map((d) => ({ ...d, isSelected: false }));
 	}
 
+	// async function copySelectedImageToClipboard() {
+	// 	try {
+	// 		const selectedMedia = draggables.find((d) => d.isSelected);
+	// 		// Fetch the image data from the URL
+	// 		const response = await fetch(selectedMedia.src);
+	// 		const blob = await response.blob();
+	//
+	// 		// Create a ClipboardItem with the image blob
+	// 		const item = new ClipboardItem({
+	// 			'image/png': blob // You can specify other MIME types if necessary
+	// 		});
+	//
+	// 		// Write the ClipboardItem to the clipboard
+	// 		await navigator.clipboard.write([item]);
+	//
+	// 		console.log('Image copied to clipboard!');
+	// 	} catch (error) {
+	// 		console.error('Failed to copy image to clipboard: ', error);
+	// 	}
+	// }
+	//
 	function handleKeyDown(event: KeyboardEvent) {
 		switch (true) {
 			case event.key === 'Backspace' || event.key === 'Delete':

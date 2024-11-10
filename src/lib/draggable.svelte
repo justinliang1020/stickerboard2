@@ -19,8 +19,10 @@
 	let activeCorner: string | null = $state(null);
 
 	$effect(() => {
-		width = imgEl.naturalWidth;
-		height = imgEl.naturalHeight;
+		imgEl.onload = function () {
+			width = imgEl.naturalWidth;
+			height = imgEl.naturalHeight;
+		};
 	});
 
 	function handleMouseDown(event: MouseEvent) {
@@ -125,7 +127,7 @@
 >
 	<img
 		{src}
-		alt={src}
+		alt={src.substring(0, 50)}
 		class="draggable-image"
 		class:selected={isSelected}
 		draggable="false"
