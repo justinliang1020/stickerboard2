@@ -18,7 +18,12 @@
 	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
 
+	// TODO: investigate width/height setting being weird
 	$effect(() => {
+		// this fires for images that are pre-loaded
+		width = imgEl.naturalWidth;
+		height = imgEl.naturalHeight;
+		// this fires for images that are loaded by the user
 		imgEl.onload = function () {
 			width = imgEl.naturalWidth;
 			height = imgEl.naturalHeight;
