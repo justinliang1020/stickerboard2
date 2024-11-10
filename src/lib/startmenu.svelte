@@ -58,11 +58,15 @@
 		<div class="right-panel">
 			<h2>background</h2>
 			{#each backgrounds as b}
-				{#if b.bgType == 'color'}
-					<div style="width:50px;height: 50px;background-color: {b.color};"></div>
-				{:else if b.bgType == 'image'}
-					<img src={b.src} alt="" width="50px" />
-				{/if}
+				<div class="background-item">
+					<button type="button">
+						{#if b.bgType == 'color'}
+							<div style="background-color: {b.color}; width:100%; height: 100%"></div>
+						{:else if b.bgType == 'image'}
+							<img src={b.src} alt="" style="width: 100%" />
+						{/if}
+					</button>
+				</div>
 			{/each}
 			<div class="menu-item">
 				<img src="/programs.png" alt="All Programs" />
@@ -176,5 +180,12 @@
 		background: #d3e5fa;
 		border-top: 1px solid #7aa7e7;
 		padding: 6px 0;
+	}
+
+	.background-item > button {
+		width: 50px;
+		height: 50px;
+		border: 0;
+		padding: 0;
 	}
 </style>
