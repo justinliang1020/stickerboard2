@@ -5,7 +5,7 @@
 <div class="start-menu" bind:this={topLevelHtmlElement}>
 	<div class="user-section">
 		<img src="/user-avatar.png" alt="User" class="user-avatar" />
-		<span class="user-name">User Name</span>
+		<span class="user-name">stickerboard 2</span>
 	</div>
 
 	<div class="menu-items">
