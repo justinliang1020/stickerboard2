@@ -45,8 +45,7 @@
 		on:click={toggleStartMenu}
 		bind:this={startButton}
 	>
-		<img src="" alt="Start" class="start-icon" />
-		<span>start</span>
+		<p>😸 Start</p>
 	</button>
 
 	{#if isStartMenuOpen}
@@ -123,7 +122,6 @@
 		border: 1px solid #244b23;
 		border-radius: 3px;
 		color: white;
-		text-transform: capitalize;
 		font-family: 'Tahoma', sans-serif;
 		font-size: 14px;
 		cursor: pointer;
@@ -147,11 +145,6 @@
 			#112e10 97%,
 			#112e10 100%
 		);
-	}
-
-	.start-icon {
-		width: 16px;
-		height: 16px;
 	}
 
 	.system-tray {
