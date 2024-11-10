@@ -5,6 +5,7 @@
 		y = $bindable(0),
 		isSelected = $bindable(false)
 	}: { src: string; x: number; y: number; isSelected: boolean } = $props();
+	//TODO: should move all state-alterting variables to component props?
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
