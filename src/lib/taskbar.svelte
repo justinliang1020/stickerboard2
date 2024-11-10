@@ -45,7 +45,7 @@
 		on:click={toggleStartMenu}
 		bind:this={startButton}
 	>
-		<img src="/windows-logo.png" alt="Start" class="start-icon" />
+		<img src="" alt="Start" class="start-icon" />
 		<span>start</span>
 	</button>
 
@@ -56,10 +56,10 @@
 	<div class="system-tray">
 		<div class="tray-icons">
 			<div class="tray-icon">
-				<img src="/volume.png" alt="Volume" />
+				<img src="" alt="Volume" />
 			</div>
 			<div class="tray-icon">
-				<img src="/network.png" alt="Network" />
+				<img src="" alt="Network" />
 			</div>
 			<div class="tray-icon clock">
 				{time}
