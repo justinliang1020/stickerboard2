@@ -45,7 +45,7 @@
 		on:click={toggleStartMenu}
 		bind:this={startButton}
 	>
-		<p>😸 Start</p>
+		<span>😸 Start</span>
 	</button>
 
 	{#if isStartMenuOpen}
@@ -55,10 +55,7 @@
 	<div class="system-tray">
 		<div class="tray-icons">
 			<div class="tray-icon">
-				<img src="" alt="Volume" />
-			</div>
-			<div class="tray-icon">
-				<img src="" alt="Network" />
+				<span>🔈</span>
 			</div>
 			<div class="tray-icon clock">
 				{time}
@@ -168,11 +165,6 @@
 		justify-content: center;
 		padding: 0 4px;
 		height: 100%;
-	}
-
-	.tray-icon img {
-		width: 16px;
-		height: 16px;
 	}
 
 	.clock {
