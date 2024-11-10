@@ -11,6 +11,7 @@
 	let x = $state(initialX);
 	let y = $state(initialY);
 	let imgEl: HTMLImageElement;
+	let containerEl: HTMLDivElement;
 	let mouseDownStartX: number;
 	let mouseDownStartY: number;
 	let mouseDownStartWidth: number;
@@ -103,9 +104,9 @@
 		activeCorner = null;
 	}
 
-	function handleWindowClick(event: MouseEvent) {
+	function handleWindowMouseDown(event: MouseEvent) {
 		const target = event.target as HTMLElement;
-		if (!target.closest('.draggable-container')) {
+		if (target.closest('.draggable-container') !== containerEl) {
 			isSelected = false;
 		}
 	}
@@ -114,7 +115,7 @@
 <svelte:window
 	on:mousemove={handleMouseMove}
 	on:mouseup={handleMouseUp}
-	on:click={handleWindowClick}
+	on:mousedown={handleWindowMouseDown}
 />
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
@@ -122,6 +123,7 @@
 	class="draggable-container"
 	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
 	onmousedown={handleMouseDown}
+	bind:this={containerEl}
 >
 	<img
 		{src}
