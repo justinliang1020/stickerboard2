@@ -5,13 +5,15 @@
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
 	let draggables: DraggablePropTypes[] = $state([
-		{ src: 'frieren-icegif-5.gif', initialX: 500, initialY: 400 },
+		{ src: 'frieren-icegif-5.gif', initialX: 500, initialY: 400, isSelected: false },
 		{
 			src: 'windows-xp-dialog-funny.webp',
 			initialX: 400,
-			initialY: 100
+			initialY: 100,
+			isSelected: false
 		}
 	]);
+	addDraggable({ src: 'rat-spinning.gif', isSelected: false });
 
 	function addDraggable(draggable: DraggablePropTypes) {
 		const defaultInitialX = 200;
@@ -39,18 +41,44 @@
 		const reader = new FileReader();
 		reader.onload = (e: ProgressEvent<FileReader>) => {
 			const result = e.target?.result;
-			if (result) addDraggable({ src: result as string });
+			if (result) addDraggable({ src: result as string, isSelected: false });
 		};
 		reader.readAsDataURL(file);
 	}
 
-	addDraggable({ src: 'rat-spinning.gif' });
+	function deleteSelectedMedia() {
+		console.log(draggables);
+		draggables = draggables.filter((d) => d.isSelected === false);
+		console.log(draggables);
+	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		switch (true) {
+			case event.key === 'Backspace' || event.key === 'Delete':
+				deleteSelectedMedia();
+				event.preventDefault();
+				break;
+			case (event.ctrlKey || event.metaKey) && event.key === 'c':
+				// copySelectedImageToClipboard();
+				event.preventDefault();
+				break;
+			case (event.ctrlKey || event.metaKey) && event.key === 'x':
+				// copySelectedImageToClipboard();
+				// deleteSelectedMedia();
+				event.preventDefault();
+				break;
+			case event.key === 'Escape':
+				// isSelected = false;
+				event.preventDefault();
+				break;
+		}
+	}
 </script>
 
-<svelte:window on:paste={handlePaste} />
+<svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
 
 {#each draggables as d}
-	<Draggable {...d} />
+	<Draggable {...d} bind:isSelected={d.isSelected} />
 {/each}
 
 <Taskbar />
