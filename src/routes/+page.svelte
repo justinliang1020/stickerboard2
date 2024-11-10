@@ -1,14 +1,10 @@
 <script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
 	import Draggable from '$lib/draggable.svelte';
+	import type { ComponentProps } from 'svelte';
+	type DraggablePropTypes = ComponentProps<Draggable>;
 
-	type Media = {
-		src: string;
-		initialX?: number;
-		initialY?: number;
-	};
-
-	let medias: Media[] = $state([
+	let draggables: DraggablePropTypes[] = $state([
 		{ src: 'frieren-icegif-5.gif', initialX: 500, initialY: 400 },
 		{
 			src: 'windows-xp-dialog-funny.webp',
@@ -17,12 +13,12 @@
 		}
 	]);
 
-	function addMedia(media: Media) {
+	function addDraggable(draggable: DraggablePropTypes) {
 		const defaultInitialX = 200;
 		const defaultInitialY = 200;
-		media.initialX = defaultInitialX;
-		media.initialY = defaultInitialY;
-		medias.push(media);
+		draggable.initialX = defaultInitialX;
+		draggable.initialY = defaultInitialY;
+		draggables.push(draggable);
 	}
 
 	function handlePaste(event: ClipboardEvent) {
@@ -31,30 +27,30 @@
 		Array.from(items).some((item) => {
 			if (item.type.startsWith('image')) {
 				const file = item.getAsFile();
-				if (file) processFileAndAddMedia(file);
+				if (file) processFileAndAddDraggable(file);
 				return true;
 			}
 			return false;
 		});
 	}
 
-	function processFileAndAddMedia(file: File) {
+	function processFileAndAddDraggable(file: File) {
 		if (!file) return;
 		const reader = new FileReader();
 		reader.onload = (e: ProgressEvent<FileReader>) => {
 			const result = e.target?.result;
-			if (result) addMedia({ src: result as string });
+			if (result) addDraggable({ src: result as string });
 		};
 		reader.readAsDataURL(file);
 	}
 
-	addMedia({ src: 'rat-spinning.gif' });
+	addDraggable({ src: 'rat-spinning.gif' });
 </script>
 
 <svelte:window on:paste={handlePaste} />
 
-{#each medias as m}
-	<Draggable {...m} />
+{#each draggables as d}
+	<Draggable {...d} />
 {/each}
 
 <Taskbar />

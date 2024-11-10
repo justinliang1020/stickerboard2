@@ -2,12 +2,12 @@
 	let {
 		src,
 		initialX = 0,
-		initialY = 0
-	}: { src: string; initialX?: number; initialY?: number } = $props();
+		initialY = 0,
+		isSelected = $bindable(false)
+	}: { src: string; initialX?: number; initialY?: number; isSelected?: boolean } = $props();
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
-	let isSelected = $state(false);
 	let x = $state(initialX);
 	let y = $state(initialY);
 	let imgEl: HTMLImageElement;
@@ -110,12 +110,35 @@
 			isSelected = false;
 		}
 	}
+
+	function handleKeyDown(event: KeyboardEvent) {
+		switch (true) {
+			case event.key === 'Backspace' || event.key === 'Delete':
+				// deleteSelectedMedia();
+				event.preventDefault();
+				break;
+			case (event.ctrlKey || event.metaKey) && event.key === 'c':
+				// copySelectedImageToClipboard();
+				event.preventDefault();
+				break;
+			case (event.ctrlKey || event.metaKey) && event.key === 'x':
+				// copySelectedImageToClipboard();
+				// deleteSelectedMedia();
+				event.preventDefault();
+				break;
+			case event.key === 'Escape':
+				isSelected = false;
+				event.preventDefault();
+				break;
+		}
+	}
 </script>
 
 <svelte:window
 	on:mousemove={handleMouseMove}
 	on:mouseup={handleMouseUp}
 	on:mousedown={handleWindowMouseDown}
+	on:keydown={handleKeyDown}
 />
 
 <!-- svelte-ignore a11y_no_static_element_interactions -->
