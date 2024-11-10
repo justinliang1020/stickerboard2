@@ -1,15 +1,13 @@
 <script lang="ts">
 	let {
 		src,
-		initialX = 0,
-		initialY = 0,
+		x = $bindable(0),
+		y = $bindable(0),
 		isSelected = $bindable(false)
-	}: { src: string; initialX?: number; initialY?: number; isSelected: boolean } = $props();
+	}: { src: string; x: number; y: number; isSelected: boolean } = $props();
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
-	let x = $state(initialX);
-	let y = $state(initialY);
 	let imgEl: HTMLImageElement;
 	let containerEl: HTMLDivElement;
 	let mouseDownStartX: number;

@@ -5,22 +5,18 @@
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
 	let draggables: DraggablePropTypes[] = $state([
-		{ src: 'frieren-icegif-5.gif', initialX: 500, initialY: 400, isSelected: false },
+		{ src: 'frieren-icegif-5.gif', x: 500, y: 400, isSelected: false },
 		{
 			src: 'windows-xp-dialog-funny.webp',
-			initialX: 400,
-			initialY: 100,
+			x: 400,
+			y: 100,
 			isSelected: false
 		},
-		{ src: 'rat-spinning.gif', isSelected: false }
+		{ src: 'rat-spinning.gif', x: 0, y: 0, isSelected: false }
 	]);
 
-	function addDraggable(draggable: DraggablePropTypes) {
-		const defaultInitialX = 200;
-		const defaultInitialY = 200;
-		draggable.initialX = defaultInitialX;
-		draggable.initialY = defaultInitialY;
-		draggables.push(draggable);
+	function addDraggable(src: string) {
+		draggables.push({ src, x: 200, y: 200, isSelected: false });
 	}
 
 	function handlePaste(event: ClipboardEvent) {
@@ -41,13 +37,17 @@
 		const reader = new FileReader();
 		reader.onload = (e: ProgressEvent<FileReader>) => {
 			const result = e.target?.result;
-			if (result) addDraggable({ src: result as string, isSelected: false });
+			if (result) addDraggable(result as string);
 		};
 		reader.readAsDataURL(file);
 	}
 
 	function deleteSelectedMedia() {
 		draggables = draggables.filter((d) => d.isSelected === false);
+	}
+
+	function unselectSelectedMedia() {
+		draggables = draggables.map((d) => ({ ...d, isSelected: false }));
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
@@ -66,7 +66,7 @@
 				event.preventDefault();
 				break;
 			case event.key === 'Escape':
-				// isSelected = false;
+				unselectSelectedMedia();
 				event.preventDefault();
 				break;
 		}
@@ -76,7 +76,7 @@
 <svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
 
 {#each draggables as d (d)}
-	<Draggable {...d} bind:isSelected={d.isSelected} />
+	<Draggable {...d} bind:x={d.x} bind:y={d.y} bind:isSelected={d.isSelected} />
 {/each}
 
 <Taskbar />
