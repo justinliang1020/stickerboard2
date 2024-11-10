@@ -1,5 +1,22 @@
 <script lang="ts">
 	let { topLevelHtmlElement = $bindable() }: { topLevelHtmlElement: HTMLElement } = $props();
+
+	type ColorBackground = {
+		bgType: 'color';
+		color: string;
+	};
+
+	type ImageBackground = {
+		bgType: 'image';
+		src: string;
+	};
+
+	type Background = ColorBackground | ImageBackground;
+
+	let backgrounds: Background[] = $state([
+		{ bgType: 'color', color: 'red' },
+		{ bgType: 'image', src: 'windows-xp-background.jpg' }
+	]);
 </script>
 
 <div class="start-menu" bind:this={topLevelHtmlElement}>
@@ -40,6 +57,13 @@
 
 		<div class="right-panel">
 			<h2>background</h2>
+			{#each backgrounds as b}
+				{#if b.bgType == 'color'}
+					<div style="width:50px;height: 50px;background-color: {b.color};"></div>
+				{:else if b.bgType == 'image'}
+					<img src={b.src} alt="" width="50px" />
+				{/if}
+			{/each}
 			<div class="menu-item">
 				<img src="/programs.png" alt="All Programs" />
 				<span>All Programs</span>
@@ -107,13 +131,13 @@
 	}
 
 	.left-panel {
-		flex: 3;
+		flex: 2;
 		background: white;
 		padding: 6px 0;
 	}
 
 	.right-panel {
-		flex: 2;
+		flex: 1;
 		background: #d3e5fa;
 		border-left: 1px solid #7aa7e7;
 		padding: 6px 0;
