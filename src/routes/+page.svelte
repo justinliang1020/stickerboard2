@@ -25,8 +25,33 @@
 		medias.push(media);
 	}
 
+	function handlePaste(event: ClipboardEvent) {
+		const items = event.clipboardData?.items;
+		if (!items) return;
+		Array.from(items).some((item) => {
+			if (item.type.startsWith('image')) {
+				const file = item.getAsFile();
+				if (file) processFileAndAddMedia(file);
+				return true;
+			}
+			return false;
+		});
+	}
+
+	function processFileAndAddMedia(file: File) {
+		if (!file) return;
+		const reader = new FileReader();
+		reader.onload = (e: ProgressEvent<FileReader>) => {
+			const result = e.target?.result;
+			if (result) addMedia({ src: result as string });
+		};
+		reader.readAsDataURL(file);
+	}
+
 	addMedia({ src: 'rat-spinning.gif' });
 </script>
+
+<svelte:window on:paste={handlePaste} />
 
 {#each medias as m}
 	<Draggable {...m} />
