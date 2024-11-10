@@ -11,9 +11,9 @@
 			initialX: 400,
 			initialY: 100,
 			isSelected: false
-		}
+		},
+		{ src: 'rat-spinning.gif', isSelected: false }
 	]);
-	addDraggable({ src: 'rat-spinning.gif', isSelected: false });
 
 	function addDraggable(draggable: DraggablePropTypes) {
 		const defaultInitialX = 200;
@@ -47,9 +47,7 @@
 	}
 
 	function deleteSelectedMedia() {
-		console.log(draggables);
 		draggables = draggables.filter((d) => d.isSelected === false);
-		console.log(draggables);
 	}
 
 	function handleKeyDown(event: KeyboardEvent) {
@@ -77,7 +75,7 @@
 
 <svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
 
-{#each draggables as d}
+{#each draggables as d (d)}
 	<Draggable {...d} bind:isSelected={d.isSelected} />
 {/each}
 
