@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Startmenu from './startmenu.svelte';
+	import Startmenu from './Startmenu.svelte';
 
 	let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	let isStartMenuOpen = false;
 	let startButton: HTMLButtonElement;
-	let startMenu: HTMLElement;
+	let startMenu: any;
 
 	// Update clock every minute
 	onMount(() => {

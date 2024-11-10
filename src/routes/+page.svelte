@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Taskbar from '$lib/taskbar.svelte';
-	import Draggable from '$lib/draggable.svelte';
+	import Taskbar from '$lib/Taskbar.svelte';
+	import Draggable from '$lib/Draggable.svelte';
 	import type { ComponentProps } from 'svelte';
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
