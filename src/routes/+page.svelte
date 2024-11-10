@@ -1,11 +1,36 @@
-<script>
+<script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
 	import Draggable from '$lib/draggable.svelte';
+
+	type Media = {
+		src: string;
+		initialX?: number;
+		initialY?: number;
+	};
+
+	let medias: Media[] = $state([
+		{ src: 'frieren-icegif-5.gif', initialX: 500, initialY: 400 },
+		{
+			src: 'windows-xp-dialog-funny.webp',
+			initialX: 400,
+			initialY: 100
+		}
+	]);
+
+	function addMedia(media: Media) {
+		const defaultInitialX = 200;
+		const defaultInitialY = 200;
+		media.initialX = defaultInitialX;
+		media.initialY = defaultInitialY;
+		medias.push(media);
+	}
+
+	addMedia({ src: 'rat-spinning.gif' });
 </script>
 
-<Draggable src="rat-spinning.gif" />
-<Draggable src="frieren-icegif-5.gif" initialX={500} initialY={400} />
-<Draggable src="windows-xp-dialog-funny.webp" initialX={200} initialY={350} />
+{#each medias as m}
+	<Draggable {...m} />
+{/each}
 
 <Taskbar />
 
