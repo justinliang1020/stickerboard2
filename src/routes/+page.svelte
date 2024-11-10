@@ -111,9 +111,6 @@
 
 <style>
 	:global(body) {
-		background-image: url('windows-xp-background.jpg');
-		background-repeat: no-repeat;
-		background-attachment: fixed;
-		background-size: 100% 100%;
+		background: no-repeat fixed url('windows-xp-background.jpg') center / 100% 100%;
 	}
 </style>

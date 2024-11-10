@@ -13,14 +13,22 @@
 
 	type Background = ColorBackground | ImageBackground;
 
-	let backgrounds: Background[] = $state([
+	//TODO: make background not increase size of entire start menu when adding items
+	const backgrounds: Background[] = $state([
 		{ bgType: 'color', color: 'white' },
 		{ bgType: 'color', color: 'black' },
 		{ bgType: 'image', src: 'windows-xp-background.jpg' }
 	]);
 
-	function switchBackground() {
-		console.log('bg clicked');
+	function setBackground(b: Background) {
+		switch (b.bgType) {
+			case 'color':
+				document.body.style.background = b.color;
+				return;
+			case 'image':
+				document.body.style.background = `no-repeat fixed url(${b.src}) center / 100% 100%`;
+				return;
+		}
 	}
 </script>
 
@@ -63,7 +71,7 @@
 		<div class="right-panel">
 			<h2>background</h2>
 			{#each backgrounds as b}
-				<button type="button" class="background-item" onclick={switchBackground}>
+				<button type="button" class="background-item" onclick={() => setBackground(b)}>
 					{#if b.bgType == 'color'}
 						<div style="background-color: {b.color}; width:100%; height: 100%;"></div>
 					{:else if b.bgType == 'image'}
