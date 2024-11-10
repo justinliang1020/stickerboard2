@@ -39,6 +39,7 @@
 		</div>
 
 		<div class="right-panel">
+			<h2>background</h2>
 			<div class="menu-item">
 				<img src="/programs.png" alt="All Programs" />
 				<span>All Programs</span>
@@ -60,11 +61,14 @@
 </div>
 
 <style>
+	h2 {
+		margin: 0.2em;
+	}
 	.start-menu {
 		position: fixed;
 		bottom: 30px;
 		left: 0;
-		width: 380px;
+		width: 500px;
 		background: white;
 		border: 1px solid #003c74;
 		border-bottom: none;
@@ -72,6 +76,8 @@
 		display: flex;
 		flex-direction: column;
 		padding: 2px;
+		font-family: 'Tahoma', sans-serif;
+		font-size: 11px;
 	}
 
 	.user-section {
@@ -101,13 +107,13 @@
 	}
 
 	.left-panel {
-		flex: 2;
+		flex: 3;
 		background: white;
 		padding: 6px 0;
 	}
 
 	.right-panel {
-		flex: 1;
+		flex: 2;
 		background: #d3e5fa;
 		border-left: 1px solid #7aa7e7;
 		padding: 6px 0;
@@ -120,8 +126,6 @@
 		padding: 4px 8px;
 		cursor: pointer;
 		color: black;
-		font-family: 'Tahoma', sans-serif;
-		font-size: 11px;
 	}
 
 	.menu-item:hover {
