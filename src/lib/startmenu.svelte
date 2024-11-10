@@ -14,9 +14,14 @@
 	type Background = ColorBackground | ImageBackground;
 
 	let backgrounds: Background[] = $state([
-		{ bgType: 'color', color: 'red' },
+		{ bgType: 'color', color: 'white' },
+		{ bgType: 'color', color: 'black' },
 		{ bgType: 'image', src: 'windows-xp-background.jpg' }
 	]);
+
+	function switchBackground() {
+		console.log('bg clicked');
+	}
 </script>
 
 <div class="start-menu" bind:this={topLevelHtmlElement}>
@@ -58,21 +63,14 @@
 		<div class="right-panel">
 			<h2>background</h2>
 			{#each backgrounds as b}
-				<div class="background-item">
-					<button type="button">
-						{#if b.bgType == 'color'}
-							<div style="background-color: {b.color}; width:100%; height: 100%"></div>
-						{:else if b.bgType == 'image'}
-							<img src={b.src} alt="" style="width: 100%" />
-						{/if}
-					</button>
-				</div>
+				<button type="button" class="background-item" onclick={switchBackground}>
+					{#if b.bgType == 'color'}
+						<div style="background-color: {b.color}; width:100%; height: 100%;"></div>
+					{:else if b.bgType == 'image'}
+						<img src={b.src} alt="" style="width: 100%; height: 100%" />
+					{/if}
+				</button>
 			{/each}
-			<div class="menu-item">
-				<img src="/programs.png" alt="All Programs" />
-				<span>All Programs</span>
-				<span class="arrow">▸</span>
-			</div>
 		</div>
 	</div>
 
@@ -144,7 +142,7 @@
 		flex: 1;
 		background: #d3e5fa;
 		border-left: 1px solid #7aa7e7;
-		padding: 6px 0;
+		padding: 6px 2px;
 	}
 
 	.menu-item {
@@ -172,20 +170,15 @@
 		border-top: 1px solid #dfdfdf;
 	}
 
-	.arrow {
-		margin-left: auto;
-	}
-
 	.bottom-section {
 		background: #d3e5fa;
 		border-top: 1px solid #7aa7e7;
 		padding: 6px 0;
 	}
 
-	.background-item > button {
-		width: 50px;
-		height: 50px;
-		border: 0;
+	.background-item {
+		width: 100%;
+		height: 100px;
 		padding: 0;
 	}
 </style>
