@@ -25,7 +25,6 @@
 		Array.from(items).some((item) => {
 			if (item.type.startsWith('image')) {
 				const file = item.getAsFile();
-				console.log(file);
 				if (file) processFileAndAddDraggable(file);
 				return true;
 			}
@@ -48,7 +47,10 @@
 	}
 
 	function unselectSelectedMedia() {
-		draggables = draggables.map((d) => ({ ...d, isSelected: false }));
+		const selectedMedia = draggables.find((d) => d.isSelected);
+		if (selectedMedia) {
+			selectedMedia.isSelected = false;
+		}
 	}
 
 	// async function copySelectedImageToClipboard() {
@@ -93,6 +95,10 @@
 				break;
 		}
 	}
+
+	// $effect(() => {
+	// 	$inspect(draggables);
+	// });
 </script>
 
 <svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
