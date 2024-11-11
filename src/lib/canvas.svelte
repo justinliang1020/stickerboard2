@@ -4,52 +4,20 @@
 	import type { ComponentProps } from 'svelte';
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
-	let draggables: DraggablePropTypes[] = $state([
-		{
-			mediaFormat: 'img',
-			src: 'frieren-icegif-5.gif',
-			x: 500,
-			y: 400,
-			z: 0,
-			isSelected: false,
-			isEditing: false
-		},
-		{
-			mediaFormat: 'img',
-			src: 'windows-xp-dialog-funny.webp',
-			x: 400,
-			y: 100,
-			z: 1,
-			isSelected: false,
-			isEditing: false
-		},
-		{
-			mediaFormat: 'img',
-			src: 'rat-spinning.gif',
-			x: 0,
-			y: 0,
-			z: 2,
-			isSelected: false,
-			isEditing: false
-		},
-		{
-			mediaFormat: 'text',
-			src: 'hello world',
-			x: 0,
-			y: 0,
-			z: 3,
-			isSelected: false,
-			isEditing: false
-		}
-	]);
+	let draggables: DraggablePropTypes[] = $state([]);
 
-	function addDraggable(src: string) {
+	addDraggable('img', 'rat-spinning.gif');
+	addDraggable('img', 'frieren-icegif-5.gif', 500, 400);
+	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100);
+	addDraggable('text', 'hello world', 100, 200);
+
+	function addDraggable(mediaFormat: MediaFormat, src: string, x: number = 200, y: number = 200) {
 		const z = getMaxZIndex() + 1;
 		draggables.push({
-			mediaFormat: 'img',
+			mediaFormat,
 			src,
-			x: 200,
-			y: 200,
+			x,
+			y,
 			z: z,
 			isSelected: false,
 			isEditing: false
@@ -82,7 +50,7 @@
 		const reader = new FileReader();
 		reader.onload = (e: ProgressEvent<FileReader>) => {
 			const result = e.target?.result;
-			if (result) addDraggable(result as string);
+			if (result) addDraggable('img', result as string);
 		};
 		reader.readAsDataURL(file);
 	}
