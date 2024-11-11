@@ -10,6 +10,7 @@
 			src: 'frieren-icegif-5.gif',
 			x: 500,
 			y: 400,
+			z: 0,
 			isSelected: false,
 			isEditing: false
 		},
@@ -18,6 +19,7 @@
 			src: 'windows-xp-dialog-funny.webp',
 			x: 400,
 			y: 100,
+			z: 0,
 			isSelected: false,
 			isEditing: false
 		},
@@ -26,10 +28,19 @@
 			src: 'rat-spinning.gif',
 			x: 0,
 			y: 0,
+			z: 0,
 			isSelected: false,
 			isEditing: false
 		},
-		{ mediaFormat: 'text', src: 'hello world', x: 0, y: 0, isSelected: false, isEditing: false }
+		{
+			mediaFormat: 'text',
+			src: 'hello world',
+			x: 0,
+			y: 0,
+			z: 0,
+			isSelected: false,
+			isEditing: false
+		}
 	]);
 
 	function addDraggable(src: string) {
@@ -38,9 +49,18 @@
 			src,
 			x: 200,
 			y: 200,
+			z: 0,
 			isSelected: false,
 			isEditing: false
 		});
+	}
+
+	export function getMaxZIndex(): number {
+		return draggables.reduce((acc, d) => Math.max(acc, d.z), -Infinity);
+	}
+
+	export function getMinZIndex(): number {
+		return draggables.reduce((acc, d) => Math.min(acc, d.z), Infinity);
 	}
 
 	function handlePaste(event: ClipboardEvent) {
@@ -137,7 +157,7 @@
 <svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
 
 {#each draggables as d (d)}
-	<Draggable {...d} bind:x={d.x} bind:y={d.y} bind:isSelected={d.isSelected} />
+	<Draggable {...d} bind:x={d.x} bind:y={d.y} bind:z={d.z} bind:isSelected={d.isSelected} />
 {/each}
 
 <Taskbar />

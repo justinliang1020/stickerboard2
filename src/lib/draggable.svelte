@@ -5,6 +5,7 @@
 		src,
 		x = $bindable(0),
 		y = $bindable(0),
+		z = $bindable(0),
 		isSelected = $bindable(false),
 		isEditing = $bindable(false)
 	}: {
@@ -12,6 +13,7 @@
 		src: string;
 		x: number;
 		y: number;
+		z: number;
 		isSelected: boolean;
 		isEditing: boolean;
 	} = $props();
@@ -146,7 +148,7 @@
 <div
 	class="draggable-container"
 	class:selected={isSelected}
-	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
+	style="position: absolute; left: {x}px; top: {y}px; z-index: {z}; width: {width}px; height: {height}px;"
 	onmousedown={handleMouseDown}
 	bind:this={containerEl}
 >
