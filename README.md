@@ -1,28 +1,37 @@
 # stickerboard 2 electric boogaloo
 
 fein fein fein fein
+
 fein fein fein fein
+
 fein fein fein fein
+
 fein fein fein fein
 
 ## todo
 
-- add taskbar icons
-- upload bg image
-
+- default image upload size (big images shouldn't overflow)
 - delete image drag (fade in trash can when dragging)
 - upload image button
-- sounds
 - crop
+
+## bug
+
 - fix large images from adding a scrollbar (some sort of div inline positioning thing)
+- fix when width goes below 0 glitch
 
 ## hard todo
 
+- sounds
 - make work on mobile
 - image segmentation
 - make stuff responsive
 - copy image button (how to also copy gif?)
 - text
+
+## backlog
+
+- upload bg images
 
 ## notes
 
