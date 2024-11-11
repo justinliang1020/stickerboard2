@@ -20,16 +20,17 @@
 			y,
 			z: z,
 			isSelected: false,
-			isEditing: false
+			isEditing: false,
+			modifyZIndex: ''
 		});
 	}
 
 	export function getMaxZIndex(): number {
-		return draggables.reduce((acc, d) => Math.max(acc, d.z), -Infinity);
+		return Math.max(...draggables.map((d) => d.z), 0);
 	}
 
 	export function getMinZIndex(): number {
-		return draggables.reduce((acc, d) => Math.min(acc, d.z), Infinity);
+		return Math.min(...draggables.map((d) => d.z), 0);
 	}
 
 	function handlePaste(event: ClipboardEvent) {
@@ -118,13 +119,36 @@
 		}
 	}
 
-	// $effect(() => {
-	// 	$inspect(draggables);
-	// });
+	$effect(() => {
+		// uncomment for debugging
+		// $inspect(draggables);
+
+		draggables.map((d) => {
+			switch (d.modifyZIndex) {
+				case 'sendToBack':
+					d.z = getMinZIndex() - 1;
+					d.modifyZIndex = '';
+					break;
+				case 'sendToFront':
+					d.z = getMaxZIndex() + 1;
+					d.modifyZIndex = '';
+					break;
+			}
+		});
+	});
 </script>
 
 <svelte:window on:paste={handlePaste} on:keydown={handleKeyDown} />
 
 {#each draggables as d (d)}
-	<Draggable {...d} bind:x={d.x} bind:y={d.y} bind:z={d.z} bind:isSelected={d.isSelected} />
+	<Draggable
+		mediaFormat={d.mediaFormat}
+		src={d.src}
+		bind:x={d.x}
+		bind:y={d.y}
+		bind:z={d.z}
+		bind:isSelected={d.isSelected}
+		bind:isEditing={d.isEditing}
+		bind:modifyZIndex={d.modifyZIndex}
+	/>
 {/each}

@@ -7,7 +7,8 @@
 		y = $bindable(0),
 		z = $bindable(0),
 		isSelected = $bindable(false),
-		isEditing = $bindable(false)
+		isEditing = $bindable(false),
+		modifyZIndex = $bindable('')
 	}: {
 		mediaFormat: MediaFormat;
 		src: string;
@@ -16,6 +17,7 @@
 		z: number;
 		isSelected: boolean;
 		isEditing: boolean;
+		modifyZIndex: '' | 'sendToFront' | 'sendToBack';
 	} = $props();
 
 	let isDragging = $state(false);
@@ -176,8 +178,18 @@
               decouple the canvas into another file?
               or could just use a svelte store for global stuff (this might be simpler?)
 -->
-		<button class="send-to-front">send to front</button>
-		<button class="send-to-back">send to back</button>
+		<button
+			class="send-to-front"
+			onclick={() => {
+				modifyZIndex = 'sendToFront';
+			}}>send to front</button
+		>
+		<button
+			class="send-to-back"
+			onclick={() => {
+				modifyZIndex = 'sendToBack';
+			}}>send to back</button
+		>
 		<div class="resize-handle nw" data-corner="nw"></div>
 		<div class="resize-handle ne" data-corner="ne"></div>
 		<div class="resize-handle sw" data-corner="sw"></div>
