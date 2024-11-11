@@ -156,7 +156,7 @@
 			bind:this={imgEl}
 		/>
 	{:else if mediaFormat === 'text'}
-		<p class="text">{src}</p>
+		<textarea name="" id="" class="text">{src}</textarea>
 	{/if}
 
 	{#if isSelected}
@@ -233,5 +233,14 @@
 			-1px 1px 0 #000,
 			1px 1px 0 #000;
 		font-family: Tahoma, sans-serif;
+
+		background-color: transparent;
+		border: none;
+		outline: none;
+		resize: none;
+		padding: 0;
+		/* fix overflow to show without scrollbar */
+		overflow: hidden;
+		line-height: inherit;
 	}
 </style>
