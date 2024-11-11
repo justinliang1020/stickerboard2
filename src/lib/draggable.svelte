@@ -5,18 +5,21 @@
 		src,
 		x = $bindable(0),
 		y = $bindable(0),
-		isSelected = $bindable(false)
+		isSelected = $bindable(false),
+		isEditing = $bindable(false)
 	}: {
 		mediaFormat: MediaFormat;
 		src: string;
 		x: number;
 		y: number;
 		isSelected: boolean;
+		isEditing: boolean;
 	} = $props();
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
 	let imgEl: HTMLImageElement | null = $state(null);
+	let textAreaEl: HTMLTextAreaElement | null = $state(null);
 	let containerEl: HTMLDivElement;
 	let mouseDownStartX: number;
 	let mouseDownStartY: number;
@@ -156,7 +159,14 @@
 			bind:this={imgEl}
 		/>
 	{:else if mediaFormat === 'text'}
-		<textarea name="" id="" class="text">{src}</textarea>
+		<textarea
+			name=""
+			id=""
+			class="text"
+			bind:this={textAreaEl}
+			onfocusin={() => (isEditing = true)}
+			onfocusout={() => (isEditing = false)}>{src}</textarea
+		>
 	{/if}
 
 	{#if isSelected}

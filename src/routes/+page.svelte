@@ -5,20 +5,42 @@
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
 	let draggables: DraggablePropTypes[] = $state([
-		{ mediaFormat: 'img', src: 'frieren-icegif-5.gif', x: 500, y: 400, isSelected: false },
+		{
+			mediaFormat: 'img',
+			src: 'frieren-icegif-5.gif',
+			x: 500,
+			y: 400,
+			isSelected: false,
+			isEditing: false
+		},
 		{
 			mediaFormat: 'img',
 			src: 'windows-xp-dialog-funny.webp',
 			x: 400,
 			y: 100,
-			isSelected: false
+			isSelected: false,
+			isEditing: false
 		},
-		{ mediaFormat: 'img', src: 'rat-spinning.gif', x: 0, y: 0, isSelected: false },
-		{ mediaFormat: 'text', src: 'hello world', x: 0, y: 0, isSelected: false }
+		{
+			mediaFormat: 'img',
+			src: 'rat-spinning.gif',
+			x: 0,
+			y: 0,
+			isSelected: false,
+			isEditing: false
+		},
+		{ mediaFormat: 'text', src: 'hello world', x: 0, y: 0, isSelected: false, isEditing: false }
 	]);
 
 	function addDraggable(src: string) {
-		draggables.push({ mediaFormat: 'img', src, x: 200, y: 200, isSelected: false });
+		draggables.push({
+			mediaFormat: 'img',
+			src,
+			x: 200,
+			y: 200,
+			isSelected: false,
+			isEditing: false
+		});
 	}
 
 	function handlePaste(event: ClipboardEvent) {
@@ -55,6 +77,13 @@
 		}
 	}
 
+	function anyDraggablesAreEditing(): Boolean {
+		for (const d of draggables) {
+			if (d.isEditing) return true;
+		}
+		return false;
+	}
+
 	// async function copySelectedImageToClipboard() {
 	// 	try {
 	// 		const selectedMedia = draggables.find((d) => d.isSelected);
@@ -79,8 +108,10 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		switch (true) {
 			case event.key === 'Backspace' || event.key === 'Delete':
-				deleteSelectedMedia();
-				event.preventDefault();
+				if (!anyDraggablesAreEditing) {
+					deleteSelectedMedia();
+					event.preventDefault();
+				}
 				break;
 			case (event.ctrlKey || event.metaKey) && event.key === 'c':
 				// copySelectedImageToClipboard();
