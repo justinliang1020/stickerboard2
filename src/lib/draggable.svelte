@@ -156,9 +156,7 @@
 			bind:this={imgEl}
 		/>
 	{:else if mediaFormat === 'text'}
-		<div>
-			<p>{src}</p>
-		</div>
+		<p class="text">{src}</p>
 	{/if}
 
 	{#if isSelected}
@@ -218,5 +216,23 @@
 		bottom: -5px;
 		right: -5px;
 		cursor: se-resize;
+	}
+
+	.text {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 5px;
+
+		color: white;
+		font-size: 2em; /* Adjust size as needed */
+		text-align: center;
+		/* Outline effect */
+		text-shadow:
+			-1px -1px 0 #000,
+			1px -1px 0 #000,
+			-1px 1px 0 #000,
+			1px 1px 0 #000;
+		font-family: Tahoma, sans-serif;
 	}
 </style>
