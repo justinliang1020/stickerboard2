@@ -142,6 +142,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="draggable-container"
+	class:selected={isSelected}
 	style="position: absolute; left: {x}px; top: {y}px; width: {width}px; height: {height}px;"
 	onmousedown={handleMouseDown}
 	bind:this={containerEl}
@@ -151,7 +152,6 @@
 			{src}
 			alt={src.substring(0, 50)}
 			class="draggable-image"
-			class:selected={isSelected}
 			draggable="false"
 			bind:this={imgEl}
 		/>
@@ -172,13 +172,13 @@
 		display: inline-block;
 		user-select: none;
 		position: relative;
+		border: 2px solid transparent;
 	}
 
 	.draggable-image {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		border: 2px solid transparent;
 	}
 
 	.selected {
@@ -222,7 +222,6 @@
 		width: 100%;
 		height: 100%;
 		margin: 0;
-		padding: 5px;
 
 		color: white;
 		font-size: 2em; /* Adjust size as needed */
