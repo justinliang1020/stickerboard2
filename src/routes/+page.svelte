@@ -5,18 +5,20 @@
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
 	let draggables: DraggablePropTypes[] = $state([
-		{ src: 'frieren-icegif-5.gif', x: 500, y: 400, isSelected: false },
+		{ mediaFormat: 'img', src: 'frieren-icegif-5.gif', x: 500, y: 400, isSelected: false },
 		{
+			mediaFormat: 'img',
 			src: 'windows-xp-dialog-funny.webp',
 			x: 400,
 			y: 100,
 			isSelected: false
 		},
-		{ src: 'rat-spinning.gif', x: 0, y: 0, isSelected: false }
+		{ mediaFormat: 'img', src: 'rat-spinning.gif', x: 0, y: 0, isSelected: false },
+		{ mediaFormat: 'text', src: 'hello world', x: 0, y: 0, isSelected: false }
 	]);
 
 	function addDraggable(src: string) {
-		draggables.push({ src, x: 200, y: 200, isSelected: false });
+		draggables.push({ mediaFormat: 'img', src, x: 200, y: 200, isSelected: false });
 	}
 
 	function handlePaste(event: ClipboardEvent) {

@@ -1,14 +1,22 @@
 <script lang="ts">
+	type MediaFormat = 'img' | 'text';
 	let {
+		mediaFormat,
 		src,
 		x = $bindable(0),
 		y = $bindable(0),
 		isSelected = $bindable(false)
-	}: { src: string; x: number; y: number; isSelected: boolean } = $props();
+	}: {
+		mediaFormat: MediaFormat;
+		src: string;
+		x: number;
+		y: number;
+		isSelected: boolean;
+	} = $props();
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
-	let imgEl: HTMLImageElement;
+	let imgEl: HTMLImageElement | null = $state(null);
 	let containerEl: HTMLDivElement;
 	let mouseDownStartX: number;
 	let mouseDownStartY: number;
@@ -18,15 +26,24 @@
 	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
 
+	if (mediaFormat == 'text') {
+		width = 200;
+		height = 200;
+	}
+
 	$effect(() => {
 		// this fires for images that are pre-loaded
-		width = imgEl.naturalWidth;
-		height = imgEl.naturalHeight;
-		// this fires for images that are loaded by the user
-		imgEl.onload = function () {
+		if (imgEl) {
 			width = imgEl.naturalWidth;
 			height = imgEl.naturalHeight;
-		};
+			// this fires for images that are loaded by the user
+			imgEl.onload = function () {
+				if (imgEl) {
+					width = imgEl.naturalWidth;
+					height = imgEl.naturalHeight;
+				}
+			};
+		}
 	});
 
 	function handleMouseDown(event: MouseEvent) {
@@ -129,14 +146,20 @@
 	onmousedown={handleMouseDown}
 	bind:this={containerEl}
 >
-	<img
-		{src}
-		alt={src.substring(0, 50)}
-		class="draggable-image"
-		class:selected={isSelected}
-		draggable="false"
-		bind:this={imgEl}
-	/>
+	{#if mediaFormat === 'img'}
+		<img
+			{src}
+			alt={src.substring(0, 50)}
+			class="draggable-image"
+			class:selected={isSelected}
+			draggable="false"
+			bind:this={imgEl}
+		/>
+	{:else if mediaFormat === 'text'}
+		<div>
+			<p>{src}</p>
+		</div>
+	{/if}
 
 	{#if isSelected}
 		<div class="resize-handle nw" data-corner="nw"></div>
