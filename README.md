@@ -8,17 +8,24 @@ fein fein fein fein
 
 fein fein fein fein
 
+## important todo
+
+- image ordering
+- add text button
+- upload image/gif button
+- fix when width goes below 0 glitch
+
 ## todo
 
 - default image upload size (big images shouldn't overflow)
 - delete image drag (fade in trash can when dragging)
 - upload image button
 - crop
+- horizontal and vertical resizing
 
 ## bug
 
 - fix large images from adding a scrollbar (some sort of div inline positioning thing)
-- fix when width goes below 0 glitch
 
 ## hard todo
 
@@ -27,7 +34,6 @@ fein fein fein fein
 - image segmentation
 - make stuff responsive
 - copy image button (how to also copy gif?)
-- text
 
 ## backlog
 
