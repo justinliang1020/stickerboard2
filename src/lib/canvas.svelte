@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Draggable from '$lib/draggable.svelte';
+	import type { MediaFormat } from '$lib/types';
 	import type { ComponentProps } from 'svelte';
 	type DraggablePropTypes = ComponentProps<Draggable>;
 

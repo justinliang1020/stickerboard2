@@ -1,5 +1,5 @@
 <script lang="ts">
-	type MediaFormat = 'img' | 'text';
+	import type { MediaFormat } from '$lib/types';
 	let {
 		mediaFormat,
 		src,
@@ -172,6 +172,10 @@
 	{/if}
 
 	{#if isSelected}
+		<!-- TODO: fix not being able to get the min and max z index
+              decouple the canvas into another file?
+              or could just use a svelte store for global stuff (this might be simpler?)
+-->
 		<button class="send-to-front">send to front</button>
 		<button class="send-to-back">send to back</button>
 		<div class="resize-handle nw" data-corner="nw"></div>
