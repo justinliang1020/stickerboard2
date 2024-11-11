@@ -172,6 +172,8 @@
 	{/if}
 
 	{#if isSelected}
+		<button class="send-to-front">send to front</button>
+		<button class="send-to-back">send to back</button>
 		<div class="resize-handle nw" data-corner="nw"></div>
 		<div class="resize-handle ne" data-corner="ne"></div>
 		<div class="resize-handle sw" data-corner="sw"></div>
@@ -195,6 +197,18 @@
 
 	.selected {
 		border-color: #001397;
+	}
+
+	.send-to-front {
+		position: absolute;
+		top: -30px;
+		left: 5px;
+	}
+
+	.send-to-back {
+		position: absolute;
+		top: -30px;
+		right: 5px;
 	}
 
 	.resize-handle {
