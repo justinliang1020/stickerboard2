@@ -5,7 +5,6 @@
 		y = $bindable(0),
 		isSelected = $bindable(false)
 	}: { src: string; x: number; y: number; isSelected: boolean } = $props();
-	//TODO: should move all state-alterting variables to component props?
 
 	let isDragging = $state(false);
 	let isResizing = $state(false);
@@ -19,7 +18,6 @@
 	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
 
-	// TODO: investigate width/height setting being weird
 	$effect(() => {
 		// this fires for images that are pre-loaded
 		width = imgEl.naturalWidth;
