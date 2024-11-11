@@ -18,7 +18,7 @@
 			src: 'windows-xp-dialog-funny.webp',
 			x: 400,
 			y: 100,
-			z: 0,
+			z: 1,
 			isSelected: false,
 			isEditing: false
 		},
@@ -27,7 +27,7 @@
 			src: 'rat-spinning.gif',
 			x: 0,
 			y: 0,
-			z: 0,
+			z: 2,
 			isSelected: false,
 			isEditing: false
 		},
@@ -36,19 +36,20 @@
 			src: 'hello world',
 			x: 0,
 			y: 0,
-			z: 0,
+			z: 3,
 			isSelected: false,
 			isEditing: false
 		}
 	]);
 
 	function addDraggable(src: string) {
+		const z = getMaxZIndex() + 1;
 		draggables.push({
 			mediaFormat: 'img',
 			src,
 			x: 200,
 			y: 200,
-			z: 0,
+			z: z,
 			isSelected: false,
 			isEditing: false
 		});
