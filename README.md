@@ -10,7 +10,6 @@ fein fein fein fein
 
 ## important todo
 
-- image ordering
 - add text button
 - upload image/gif button
 - fix when width goes below 0 glitch
@@ -18,10 +17,13 @@ fein fein fein fein
 ## todo
 
 - default image upload size (big images shouldn't overflow)
-- delete image drag (fade in trash can when dragging)
 - upload image button
-- crop
 - horizontal and vertical resizing
+- when mousing over image, change cursor to hand
+- add toolbar above selected image
+  - delete button
+  - duplicate button
+- hide taskbar (minimizes it and when user hovers over bottom it brings it back up)
 
 ## bug
 
@@ -29,10 +31,11 @@ fein fein fein fein
 
 ## hard todo
 
+- crop
 - sounds
 - make work on mobile
 - image segmentation
-- make stuff responsive
+- make size responsive
 - copy image button (how to also copy gif?)
 
 ## backlog
