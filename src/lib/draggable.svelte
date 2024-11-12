@@ -32,6 +32,7 @@
 	let width: number = $state(0);
 	let height: number = $state(0);
 	let activeCorner: string | null = $state(null);
+	const minImageSize = 50; // pixels
 
 	if (mediaFormat == 'text') {
 		width = 200;
@@ -74,6 +75,10 @@
 		}
 	}
 
+	function clamp(x: number, y: number) {
+		return Math.max(x, y);
+	}
+
 	function handleMouseMove(event: MouseEvent) {
 		if (isDragging) {
 			x = event.clientX - mouseDownStartX;
@@ -88,39 +93,39 @@
 			switch (activeCorner) {
 				case 'nw':
 					ratio = Math.sqrt(
-						((mouseDownStartWidth - dx) / mouseDownStartWidth) *
-							((mouseDownStartHeight - dy) / mouseDownStartHeight)
+						(clamp(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
+							(clamp(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
 					);
-					width = mouseDownStartWidth * ratio;
-					height = mouseDownStartHeight * ratio;
+					width = clamp(mouseDownStartWidth * ratio, minImageSize);
+					height = clamp(mouseDownStartHeight * ratio, minImageSize);
 					x -= width - originalWidth;
 					y -= height - originalHeight;
 					break;
 				case 'ne':
 					ratio = Math.sqrt(
-						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
-							((mouseDownStartHeight - dy) / mouseDownStartHeight)
+						(clamp(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
+							(clamp(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
 					);
-					width = mouseDownStartWidth * ratio;
-					height = mouseDownStartHeight * ratio;
+					width = clamp(mouseDownStartWidth * ratio, minImageSize);
+					height = clamp(mouseDownStartHeight * ratio, minImageSize);
 					y -= height - originalHeight;
 					break;
 				case 'sw':
 					ratio = Math.sqrt(
-						((mouseDownStartWidth - dx) / mouseDownStartWidth) *
-							((mouseDownStartHeight + dy) / mouseDownStartHeight)
+						(clamp(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
+							(clamp(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
 					);
-					width = mouseDownStartWidth * ratio;
-					height = mouseDownStartHeight * ratio;
+					width = clamp(mouseDownStartWidth * ratio, minImageSize);
+					height = clamp(mouseDownStartHeight * ratio, minImageSize);
 					x -= width - originalWidth;
 					break;
 				case 'se':
 					ratio = Math.sqrt(
-						((mouseDownStartWidth + dx) / mouseDownStartWidth) *
-							((mouseDownStartHeight + dy) / mouseDownStartHeight)
+						(clamp(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
+							(clamp(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
 					);
-					width = mouseDownStartWidth * ratio;
-					height = mouseDownStartHeight * ratio;
+					width = clamp(mouseDownStartWidth * ratio, minImageSize);
+					height = clamp(mouseDownStartHeight * ratio, minImageSize);
 					break;
 			}
 		}
