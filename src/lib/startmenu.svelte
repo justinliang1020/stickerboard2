@@ -41,30 +41,17 @@
 	<div class="menu-items">
 		<div class="left-panel">
 			<div class="menu-item">
-				<img src="/internet.png" alt="Internet" />
-				<span>Internet</span>
+				<img src="/windows-xp-gif-file.png" alt="Internet" />
+				<span>Upload image/gif</span>
 			</div>
 			<div class="menu-item">
-				<img src="/email.png" alt="E-mail" />
-				<span>E-mail</span>
+				<img src="/windows-xp-notepad.png" alt="E-mail" />
+				<span>Create text block</span>
 			</div>
 			<hr class="menu-separator" />
-			<div class="menu-item">
-				<img src="/pictures.png" alt="Pictures" />
-				<span>Pictures</span>
-			</div>
-			<div class="menu-item">
-				<img src="/music.png" alt="Music" />
-				<span>Music</span>
-			</div>
 			<div class="menu-item">
 				<img src="/documents.png" alt="Documents" />
 				<span>Documents</span>
-			</div>
-			<hr class="menu-separator" />
-			<div class="menu-item">
-				<img src="/control-panel.png" alt="Control Panel" />
-				<span>Control Panel</span>
 			</div>
 		</div>
 
@@ -169,8 +156,8 @@
 	}
 
 	.menu-item img {
-		width: 24px;
-		height: 24px;
+		width: 40px;
+		height: 40px;
 	}
 
 	.menu-separator {
