@@ -22,9 +22,10 @@
 		activeCorner: string | null;
 	};
 
-	addDraggable('img', 'rat-spinning.gif');
-	addDraggable('img', 'frieren-icegif-5.gif', 500, 400);
-	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100); //TODO: find natural width/height
+	// NOTE: must manually set image dimnensions
+	addDraggable('img', 'rat-spinning.gif', 0, 0, 200, 200);
+	addDraggable('img', 'frieren-icegif-5.gif', 500, 400, 220, 220);
+	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100, 191, 126); //TODO: find natural width/height
 	addDraggable('text', 'hello world', 100, 200);
 
 	export function addDraggable(
