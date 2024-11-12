@@ -10,10 +10,6 @@ fein fein fein fein
 
 ## important todo
 
-- add text button
-- upload image/gif button
-- fix when width goes below 0 glitch
-
 ## todo
 
 - default image upload size (big images shouldn't overflow)
