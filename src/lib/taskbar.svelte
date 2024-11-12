@@ -190,6 +190,7 @@
 		align-items: center;
 		padding: 0 2px;
 		border-top: 1px solid #3566ca;
+		z-index: 999999;
 	}
 
 	.start-button {
