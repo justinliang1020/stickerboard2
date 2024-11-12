@@ -1,5 +1,7 @@
 <script lang="ts">
-	let { topLevelHtmlElement = $bindable() }: { topLevelHtmlElement: HTMLElement } = $props();
+	let {
+		startMenuContainer: topLevelHtmlElement = $bindable()
+	}: { startMenuContainer: HTMLElement } = $props();
 
 	type ColorBackground = {
 		bgType: 'color';

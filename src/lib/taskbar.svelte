@@ -5,7 +5,7 @@
 	let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	let isStartMenuOpen = false;
 	let startButton: HTMLButtonElement;
-	let startMenu: any;
+	let startMenuContainer: any;
 
 	// Update clock every minute
 	onMount(() => {
@@ -16,8 +16,8 @@
 		// Close start menu when clicking outside
 		const handleClickOutside = (event: any) => {
 			if (
-				startMenu &&
-				!startMenu.contains(event.target) &&
+				startMenuContainer &&
+				!startMenuContainer.contains(event.target) &&
 				startButton &&
 				!startButton.contains(event.target)
 			) {
@@ -61,7 +61,7 @@
 </div>
 
 {#if isStartMenuOpen}
-	<Startmenu bind:topLevelHtmlElement={startMenu} />
+	<Startmenu bind:startMenuContainer />
 {/if}
 
 <style>
