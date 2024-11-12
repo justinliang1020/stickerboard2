@@ -1,9 +1,7 @@
 <script lang="ts">
-	import type { MediaFormat } from '$lib/types';
 	import Taskbar from '$lib/taskbar.svelte';
 
-	let draggables: Draggable[] = $state([]);
-
+	type MediaFormat = 'img' | 'text';
 	type Draggable = {
 		mediaFormat: MediaFormat;
 		src: string;
@@ -21,6 +19,8 @@
 		containerEl: HTMLDivElement | null;
 		activeCorner: string | null;
 	};
+
+	let draggables: Draggable[] = $state([]);
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'rat-spinning.gif', 0, 0, 200, 200);
