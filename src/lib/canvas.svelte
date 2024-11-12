@@ -104,7 +104,7 @@
 	function handleKeyDown(event: KeyboardEvent) {
 		switch (true) {
 			case event.key === 'Backspace' || event.key === 'Delete':
-				if (!anyDraggablesAreEditing) {
+				if (!anyDraggablesAreEditing()) {
 					deleteSelectedMedia();
 					event.preventDefault();
 				}
