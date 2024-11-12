@@ -59,11 +59,6 @@
 	$effect(() => {
 		for (const d of draggables) {
 			if (d.imgEl) {
-				// TODO: set images that are preloaded to a set number
-				// this fires for images that are pre-loaded
-				d.width = d.imgEl.naturalWidth;
-				d.height = d.imgEl.naturalHeight;
-				// this fires for images that are loaded by the user
 				d.imgEl.onload = function () {
 					if (d.imgEl) {
 						const maxRatio = 4 / 3;
@@ -71,8 +66,8 @@
 							(d.imgEl.naturalWidth * maxRatio) / window.innerWidth,
 							(d.imgEl.naturalHeight * maxRatio) / window.innerHeight
 						);
-						d.width = d.imgEl.naturalWidth / scaleFactor;
-						d.height = d.imgEl.naturalHeight / scaleFactor;
+						d.width = Math.min(d.imgEl.naturalWidth, d.imgEl.naturalWidth / scaleFactor);
+						d.height = Math.min(d.imgEl.naturalHeight, d.imgEl.naturalHeight / scaleFactor);
 					}
 				};
 			}
