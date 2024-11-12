@@ -156,6 +156,7 @@
 	class="draggable-container"
 	class:selected={isSelected}
 	style="position: absolute; left: {x}px; top: {y}px; z-index: {z}; width: {width}px; height: {height}px;"
+	style:cursor="grab"
 	onmousedown={handleMouseDown}
 	bind:this={containerEl}
 >
@@ -207,7 +208,7 @@
 		display: inline-block;
 		user-select: none;
 		position: relative;
-		border: 2px solid transparent;
+		border: 3px solid transparent;
 	}
 
 	.draggable-image {
