@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	let { addDraggable }: { addDraggable: Function } = $props();
+	let {
+		addDraggable,
+		processFileAndAddDraggable
+	}: { addDraggable: Function; processFileAndAddDraggable: Function } = $props();
 
 	let time = $state(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
 	let isStartMenuOpen = $state(true);
 	let startMenuContainer: HTMLElement | null = $state(null);
 	let startButton: HTMLButtonElement;
+	let uploadImageGifInput: HTMLInputElement | null = $state(null);
 
 	onMount(() => {
 		const interval = setInterval(() => {
@@ -95,7 +99,23 @@
 
 		<div class="menu-items">
 			<div class="left-panel">
-				<button class="menu-item" onclick={() => {}}>
+				<input
+					type="file"
+					accept="image/*"
+					hidden
+					bind:this={uploadImageGifInput}
+					onchange={() => {
+						for (let f of uploadImageGifInput!.files!) {
+							processFileAndAddDraggable(f);
+						}
+					}}
+				/>
+				<button
+					class="menu-item"
+					onclick={() => {
+						uploadImageGifInput!.click();
+					}}
+				>
 					<img src="/windows-xp-gif-file.png" alt="Internet" />
 					<span>Upload image/gif</span>
 				</button>

@@ -160,7 +160,7 @@
 	/>
 {/each}
 
-<Taskbar {addDraggable} />
+<Taskbar {addDraggable} {processFileAndAddDraggable} />
 
 <style>
 	:global(body) {
