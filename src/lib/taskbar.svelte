@@ -5,38 +5,35 @@
 	let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 	let isStartMenuOpen = false;
 	let startButton: HTMLButtonElement;
-	let startMenuContainer: any;
+	let startMenuContainer: HTMLElement;
 
-	// Update clock every minute
 	onMount(() => {
 		const interval = setInterval(() => {
 			time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 		}, 60000);
 
-		// Close start menu when clicking outside
-		const handleClickOutside = (event: any) => {
-			if (
-				startMenuContainer &&
-				!startMenuContainer.contains(event.target) &&
-				startButton &&
-				!startButton.contains(event.target)
-			) {
-				isStartMenuOpen = false;
-			}
-		};
-
-		document.addEventListener('click', handleClickOutside);
-
 		return () => {
 			clearInterval(interval);
-			document.removeEventListener('click', handleClickOutside);
 		};
 	});
+
+	const handleClickOutside = (event: MouseEvent) => {
+		if (
+			startMenuContainer &&
+			!startMenuContainer.contains(event.target as Node) &&
+			startButton &&
+			!startButton.contains(event.target as Node)
+		) {
+			isStartMenuOpen = false;
+		}
+	};
 
 	function toggleStartMenu() {
 		isStartMenuOpen = !isStartMenuOpen;
 	}
 </script>
+
+<svelte:window onclick={handleClickOutside} />
 
 <div class="taskbar">
 	<button
