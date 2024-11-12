@@ -291,7 +291,18 @@
 		{/if}
 
 		{#if d.isSelected}
-			<!-- TODO: add back send to front / back functionality-->
+			<button
+				class="send-to-front"
+				onclick={() => {
+					d.z = getMaxZIndex() + 1;
+				}}>send to front</button
+			>
+			<button
+				class="send-to-back"
+				onclick={() => {
+					d.z = getMinZIndex() - 1;
+				}}>send to back</button
+			>
 			<div class="resize-handle nw" data-corner="nw"></div>
 			<div class="resize-handle ne" data-corner="ne"></div>
 			<div class="resize-handle sw" data-corner="sw"></div>
