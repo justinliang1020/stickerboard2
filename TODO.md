@@ -2,7 +2,6 @@
 
 ## important todo
 
-- default image upload size (big images shouldn't overflow)
 - add toolbar above selected image
 
 ## regular todo
