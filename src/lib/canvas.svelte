@@ -2,6 +2,7 @@
 	import Draggable from '$lib/draggable.svelte';
 	import type { MediaFormat } from '$lib/types';
 	import type { ComponentProps } from 'svelte';
+	import Taskbar from '$lib/taskbar.svelte';
 	type DraggablePropTypes = ComponentProps<Draggable>;
 
 	let draggables: DraggablePropTypes[] = $state([]);
@@ -152,3 +153,11 @@
 		bind:modifyZIndex={d.modifyZIndex}
 	/>
 {/each}
+
+<Taskbar />
+
+<style>
+	:global(body) {
+		background: no-repeat fixed url('windows-xp-background.jpg') center / 100% 100%;
+	}
+</style>
