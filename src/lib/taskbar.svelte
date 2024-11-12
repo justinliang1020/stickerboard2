@@ -339,6 +339,7 @@
 		color: black;
 		background: transparent;
 		border: 0;
+		width: 100%;
 	}
 
 	.menu-item:hover {
