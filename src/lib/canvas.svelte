@@ -244,11 +244,12 @@
 	}
 
 	function handleWindowMouseDown(event: MouseEvent) {
-		// TODO: fix
-		// const target = event.target as HTMLElement;
-		// if (target.closest('.draggable-container') !== containerEl) {
-		// 	isSelected = false;
-		// }
+		const target = event.target as HTMLElement;
+		for (const d of draggables) {
+			if (target.closest('.draggable-container') !== d.containerEl) {
+				d.isSelected = false;
+			}
+		}
 	}
 </script>
 
