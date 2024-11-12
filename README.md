@@ -10,20 +10,22 @@ fein fein fein fein
 
 ## important todo
 
+- default image upload size (big images shouldn't overflow)
+- add toolbar above selected image
+
 ## todo
 
-- default image upload size (big images shouldn't overflow)
+- move upload image/gif and create text buttons to taskbar
 - upload image button
 - horizontal and vertical resizing
-- when mousing over image, change cursor to hand
-- add toolbar above selected image
+- (in taskbar)
   - delete button
   - duplicate button
-- hide taskbar (minimizes it and when user hovers over bottom it brings it back up)
+  - copy to clipboard button
+  - crop button
+- hide taskbar button in status tray (minimizes it and when user hovers over bottom it brings it back up)
 
 ## bug
-
-- fix large images from adding a scrollbar (some sort of div inline positioning thing)
 
 ## hard todo
 
@@ -33,10 +35,13 @@ fein fein fein fein
 - image segmentation
 - make size responsive
 - copy image button (how to also copy gif?)
+- rotate image
+- multiselect
 
 ## backlog
 
 - upload bg images
+- rethinking text cursor interaction (maybe don't immediately go into text mode when selecting)
 
 ## notes
 
@@ -57,20 +62,24 @@ icons:
 
 #### left panel
 
-various utility tools
-
-- upload image
-- add text
-- filters?
+- random images i think would be cool to add
+- (?) import are.na channel?
 
 #### right panel
 
-change image background
-each row is an image preview
-have a few default backgrounds (white, windows xp)
-bottom row is button add new background image
+- change image background
 
-### system tray
+#### bottom panel
+
+- help button
+
+#### taskbar
+
+- upload image/gif
+- create text
+- create shape
+
+#### system tray
 
 - hide taskbar (minimizes it and when user hovers over bottom it brings it back up)
 - sound
