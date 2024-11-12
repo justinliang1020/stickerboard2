@@ -112,6 +112,7 @@
 		padding: 2px;
 		font-family: 'Tahoma', sans-serif;
 		font-size: 11px;
+		z-index: 999999;
 	}
 
 	.user-section {

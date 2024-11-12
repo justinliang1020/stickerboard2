@@ -48,10 +48,6 @@
 		<span>😸 Start</span>
 	</button>
 
-	{#if isStartMenuOpen}
-		<Startmenu bind:topLevelHtmlElement={startMenu} />
-	{/if}
-
 	<div class="system-tray">
 		<div class="tray-icons">
 			<div class="tray-icon">
@@ -63,6 +59,10 @@
 		</div>
 	</div>
 </div>
+
+{#if isStartMenuOpen}
+	<Startmenu bind:topLevelHtmlElement={startMenu} />
+{/if}
 
 <style>
 	.taskbar {
