@@ -102,7 +102,7 @@
 		position: fixed;
 		bottom: 30px;
 		left: 0;
-		width: 500px;
+		width: 400px;
 		background: white;
 		border: 1px solid #003c74;
 		border-bottom: none;
