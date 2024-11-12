@@ -124,6 +124,7 @@
 		// uncomment for debugging
 		// $inspect(draggables);
 
+		//TODO: fix bad hack
 		draggables.map((d) => {
 			switch (d.modifyZIndex) {
 				case 'sendToBack':
