@@ -55,6 +55,23 @@
 		});
 	}
 
+	$effect(() => {
+		for (const d of draggables) {
+			if (d.imgEl) {
+				// this fires for images that are pre-loaded
+				d.width = d.imgEl.naturalWidth;
+				d.height = d.imgEl.naturalHeight;
+				// this fires for images that are loaded by the user
+				d.imgEl.onload = function () {
+					if (d.imgEl) {
+						d.width = d.imgEl.naturalWidth;
+						d.height = d.imgEl.naturalHeight;
+					}
+				};
+			}
+		}
+	});
+
 	export function getMaxZIndex(): number {
 		return Math.max(...draggables.map((d) => d.z), 0);
 	}
