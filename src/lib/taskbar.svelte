@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	let { addDraggable }: { addDraggable: Function } = $props();
 
 	let time = $state(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-	let isStartMenuOpen = $state(false);
+	let isStartMenuOpen = $state(true);
 	let startMenuContainer: HTMLElement | null = $state(null);
 	let startButton: HTMLButtonElement;
 
@@ -94,14 +95,19 @@
 
 		<div class="menu-items">
 			<div class="left-panel">
-				<div class="menu-item">
+				<button class="menu-item" onclick={() => {}}>
 					<img src="/windows-xp-gif-file.png" alt="Internet" />
 					<span>Upload image/gif</span>
-				</div>
-				<div class="menu-item">
+				</button>
+				<button
+					class="menu-item"
+					onclick={() => {
+						addDraggable('text', 'edit this text!');
+					}}
+				>
 					<img src="/windows-xp-notepad.png" alt="E-mail" />
 					<span>Create text block</span>
-				</div>
+				</button>
 				<hr class="menu-separator" />
 				<div class="menu-item">
 					<img src="/documents.png" alt="Documents" />
@@ -310,8 +316,9 @@
 		align-items: center;
 		gap: 5px;
 		padding: 4px 8px;
-		cursor: pointer;
 		color: black;
+		background: transparent;
+		border: 0;
 	}
 
 	.menu-item:hover {

@@ -12,7 +12,12 @@
 	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100);
 	addDraggable('text', 'hello world', 100, 200);
 
-	function addDraggable(mediaFormat: MediaFormat, src: string, x: number = 200, y: number = 200) {
+	export function addDraggable(
+		mediaFormat: MediaFormat,
+		src: string,
+		x: number = 100,
+		y: number = 100
+	) {
 		const z = getMaxZIndex() + 1;
 		draggables.push({
 			mediaFormat,
@@ -155,7 +160,7 @@
 	/>
 {/each}
 
-<Taskbar />
+<Taskbar {addDraggable} />
 
 <style>
 	:global(body) {
