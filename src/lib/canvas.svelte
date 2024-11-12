@@ -24,14 +24,16 @@
 
 	addDraggable('img', 'rat-spinning.gif');
 	addDraggable('img', 'frieren-icegif-5.gif', 500, 400);
-	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100);
+	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100); //TODO: find natural width/height
 	addDraggable('text', 'hello world', 100, 200);
 
 	export function addDraggable(
 		mediaFormat: MediaFormat,
 		src: string,
 		x: number = 100,
-		y: number = 100
+		y: number = 100,
+		width: number = 200,
+		height: number = 200
 	) {
 		const z = getMaxZIndex() + 1;
 		draggables.push({
@@ -39,9 +41,9 @@
 			src,
 			x,
 			y,
-			z: z,
-			width: 100,
-			height: 100,
+			z,
+			width,
+			height,
 			isSelected: false,
 			isEditing: false,
 			isDragging: false,
