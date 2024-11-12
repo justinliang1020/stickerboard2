@@ -6,7 +6,7 @@
 	}: { addDraggable: Function; processFileAndAddDraggable: Function } = $props();
 
 	let time = $state(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-	let isStartMenuOpen = $state(true);
+	let isStartMenuOpen = $state(false);
 	let startMenuContainer: HTMLElement | null = $state(null);
 	let startButton: HTMLButtonElement;
 	let uploadImageGifInput: HTMLInputElement | null = $state(null);
@@ -151,12 +151,8 @@
 
 		<div class="bottom-section">
 			<div class="menu-item">
-				<img src="/logoff.png" alt="Log Off" />
-				<span>Log Off</span>
-			</div>
-			<div class="menu-item">
 				<img src="/shutdown.png" alt="Turn Off Computer" />
-				<span>Turn Off Computer</span>
+				<span>Help</span>
 			</div>
 		</div>
 	</div>
