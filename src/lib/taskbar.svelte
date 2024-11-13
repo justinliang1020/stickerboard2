@@ -69,14 +69,47 @@
 <svelte:window onclick={handleClickOutside} />
 
 <div class="taskbar">
-	<button
-		class="start-button"
-		class:active={isStartMenuOpen}
-		onclick={toggleStartMenu}
-		bind:this={startButton}
-	>
-		<span>😸 Start</span>
-	</button>
+	<div style="display: flex; flex-direction: row;">
+		<input
+			type="file"
+			accept="image/*"
+			hidden
+			bind:this={uploadImageGifInput}
+			onchange={() => {
+				for (let f of uploadImageGifInput!.files!) {
+					processFileAndAddDraggable(f);
+				}
+			}}
+		/>
+		<button
+			class="start-button"
+			class:active={isStartMenuOpen}
+			onclick={toggleStartMenu}
+			bind:this={startButton}
+		>
+			<span>😸 Start</span>
+		</button>
+
+		<button
+			class="application-button"
+			onclick={() => {
+				uploadImageGifInput!.click();
+			}}
+		>
+			<img src="/windows-xp-gif-file.png" alt="Internet" />
+			<span>Upload Image/Gif</span>
+		</button>
+
+		<button
+			class="application-button"
+			onclick={() => {
+				addDraggable('text', 'edit this text!', 0, 0, 200, 200);
+			}}
+		>
+			<img src="/windows-xp-notepad.png" alt="E-mail" />
+			<span>Create Text Block</span>
+		</button>
+	</div>
 
 	<div class="system-tray">
 		<div class="tray-icons">
@@ -191,6 +224,7 @@
 
 	.start-button {
 		height: 28px;
+		margin-right: 10px;
 		padding: 1px 4px;
 		display: flex;
 		align-items: center;
@@ -237,6 +271,28 @@
 			#112e10 97%,
 			#112e10 100%
 		);
+	}
+
+	.application-button {
+		height: 28px;
+		width: 180px;
+		gap: 6px;
+		border: 1px solid #244b23;
+		border-radius: 3px;
+		font-family: 'Tahoma', sans-serif;
+		font-size: 14px;
+		cursor: pointer;
+		background-color: #3a80f4;
+		color: white;
+		text-align: left;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.application-button img {
+		max-width: 100%;
+		max-height: 100%;
 	}
 
 	.system-tray {
