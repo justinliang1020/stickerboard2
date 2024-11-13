@@ -103,7 +103,7 @@
 		<button
 			class="application-button"
 			onclick={() => {
-				addDraggable('text', 'edit this text!', 0, 0, 200, 200);
+				addDraggable('text', 'edit this text!', 0, 0);
 			}}
 		>
 			<img src="/windows-xp-notepad.png" alt="E-mail" />
