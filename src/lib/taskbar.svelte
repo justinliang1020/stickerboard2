@@ -288,6 +288,17 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+
+		transition:
+			background-color 0.2s,
+			box-shadow 0.2s,
+			border-color 0.2s;
+	}
+
+	.application-button:hover {
+		background-color: #5fa9f7; /* Lighter blue on hover */
+		border-color: #0b5394; /* Darker blue border to simulate depth */
+		box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Subtle shadow for 3D effect */
 	}
 
 	.application-button img {
