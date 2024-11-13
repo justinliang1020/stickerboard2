@@ -2,12 +2,9 @@
 
 ## important todo
 
-- add toolbar above selected image
-
 ## regular todo
 
-- move upload image/gif and create text buttons to taskbar
-- upload image button
+- add toolbar above selected image
 - horizontal and vertical resizing
 - (in taskbar)
   - delete button
@@ -20,6 +17,7 @@
 
 - crop
 - sounds
+  - sythesize sounds depending on action, i.e. the faster a user drags an object the more intense a sound is
 - make work on mobile
 - image segmentation
 - make size responsive
