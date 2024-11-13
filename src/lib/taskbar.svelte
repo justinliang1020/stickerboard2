@@ -87,7 +87,7 @@
 			onclick={toggleStartMenu}
 			bind:this={startButton}
 		>
-			<span>😸 Start</span>
+			<span>🖼️ Background</span>
 		</button>
 
 		<button
