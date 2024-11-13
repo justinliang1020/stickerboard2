@@ -132,35 +132,10 @@
 
 		<div class="menu-items">
 			<div class="left-panel">
-				<input
-					type="file"
-					accept="image/*"
-					hidden
-					bind:this={uploadImageGifInput}
-					onchange={() => {
-						for (let f of uploadImageGifInput!.files!) {
-							processFileAndAddDraggable(f);
-						}
-					}}
-				/>
-				<button
-					class="menu-item"
-					onclick={() => {
-						uploadImageGifInput!.click();
-					}}
-				>
-					<img src="/windows-xp-gif-file.png" alt="Internet" />
-					<span>Upload image/gif</span>
-				</button>
-				<button
-					class="menu-item"
-					onclick={() => {
-						addDraggable('text', 'edit this text!');
-					}}
-				>
-					<img src="/windows-xp-notepad.png" alt="E-mail" />
-					<span>Create text block</span>
-				</button>
+				<div class="menu-item">
+					<img src="/documents.png" alt="Documents" />
+					<span>Documents</span>
+				</div>
 				<hr class="menu-separator" />
 				<div class="menu-item">
 					<img src="/documents.png" alt="Documents" />
