@@ -344,7 +344,7 @@
 
 <style>
 	:global(body) {
-		background: no-repeat fixed url('windows-xp-background.jpg') center / 100% 100%;
+		background: no-repeat fixed url('/windows-xp-background.jpg') center / 100% 100%;
 		overflow: hidden;
 	}
 	.draggable-container {
