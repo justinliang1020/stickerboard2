@@ -27,7 +27,14 @@
 	addDraggable('img', 'frieren-icegif-5.gif', 500, 400, 220, 220);
 	addDraggable('img', 'windows-xp-dialog-funny.webp', 400, 100, 191, 126); //TODO: find natural width/height
 	addDraggable('img', 'intellectualizing-suffering.jpg', 50, 300, 400, 326);
-	addDraggable('text', 'hello world', 100, 200);
+	addDraggable(
+		'text',
+		'i want so badly to be more offline but alas the siren call of images',
+		70,
+		100,
+		300,
+		300
+	);
 
 	export function addDraggable(
 		mediaFormat: MediaFormat,
