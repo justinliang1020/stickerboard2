@@ -23,16 +23,14 @@
 	let draggables: Draggable[] = $state([]);
 
 	// NOTE: must manually set image dimnensions
-	addDraggable('img', 'rat-spinning.gif', 0, 0, 200, 200);
-	addDraggable('img', 'frieren-icegif-5.gif', 700, 400, 220, 220);
-	addDraggable('img', 'windows-xp-dialog-funny.webp', 500, 200, 191, 126); //TODO: find natural width/height
-	addDraggable('img', 'intellectualizing-suffering.jpg', 50, 300, 400, 326);
-	addDraggable('img', 'picnic.png', 800, 100, 350, 213);
+	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
+	addDraggable('img', 'sphere.gif', 942, 185, 200, 200);
+	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
 	addDraggable(
 		'text',
-		'i want so badly to be more offline but alas the siren call of images',
-		70,
-		100,
+		'Being with you and not being with you is the only way I have to measure time',
+		56,
+		284,
 		300,
 		300
 	);
