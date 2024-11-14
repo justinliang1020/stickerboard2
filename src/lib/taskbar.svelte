@@ -130,7 +130,7 @@
 {#if isStartMenuOpen}
 	<div class="start-menu" bind:this={startMenuContainer}>
 		<div class="user-section">
-			<img src="/user-avatar.png" alt="User" class="user-avatar" />
+			<img src="rat-spinning.gif" alt="User" class="user-avatar" />
 			<span class="user-name">stickerboard 2</span>
 		</div>
 
