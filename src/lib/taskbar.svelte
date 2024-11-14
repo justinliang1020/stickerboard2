@@ -136,14 +136,19 @@
 
 		<div class="menu-items">
 			<div class="left-panel">
+				<h2>filters (todo)</h2>
 				<div class="menu-item">
-					<img src="/documents.png" alt="Documents" />
-					<span>Documents</span>
+					<img src="/intellectualizing-suffering.jpg" alt="deep fried" />
+					<span>no filter</span>
 				</div>
 				<hr class="menu-separator" />
 				<div class="menu-item">
-					<img src="/documents.png" alt="Documents" />
-					<span>Documents</span>
+					<img src="/deep-fried.png" alt="deep fried" />
+					<span>deep fried</span>
+				</div>
+				<div class="menu-item">
+					<img src="/black-and-white.jpeg" alt="black and white" />
+					<span>black and white</span>
 				</div>
 			</div>
 
@@ -163,8 +168,7 @@
 
 		<div class="bottom-section">
 			<div class="menu-item">
-				<img src="/shutdown.png" alt="Turn Off Computer" />
-				<span>Help</span>
+				<span>❓ Help</span>
 			</div>
 		</div>
 	</div>
