@@ -109,6 +109,10 @@
 			<img src="/windows-xp-notepad.png" alt="E-mail" />
 			<span>Create Text Block</span>
 		</button>
+
+		<button class="application-button">
+			<span>(TODO) Create Shape</span>
+		</button>
 	</div>
 
 	<div class="system-tray">
