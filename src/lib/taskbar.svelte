@@ -350,7 +350,7 @@
 	.user-avatar {
 		width: 48px;
 		height: 48px;
-		border: 1px solid white;
+		background: white;
 	}
 
 	.user-name {
