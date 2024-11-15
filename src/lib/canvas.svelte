@@ -356,7 +356,7 @@
 
 <style>
 	:global(body) {
-		background: white;
+		background: black;
 		overflow: hidden;
 	}
 
