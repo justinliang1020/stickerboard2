@@ -82,11 +82,11 @@
 		}
 	});
 
-	export function getMaxZIndex(): number {
+	function getMaxZIndex(): number {
 		return Math.max(...draggables.map((d) => d.z), 0);
 	}
 
-	export function getMinZIndex(): number {
+	function getMinZIndex(): number {
 		return Math.min(...draggables.map((d) => d.z), 0);
 	}
 
