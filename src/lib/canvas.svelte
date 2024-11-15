@@ -28,7 +28,8 @@
 	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
 	addDraggable(
 		'text',
-		'Being with you and not being with you is the only way I have to measure time',
+		'meow',
+		// 'Being with you and not being with you is the only way I have to measure time',
 		56,
 		284,
 		300,
@@ -319,18 +320,18 @@
 		{/if}
 
 		{#if d.isSelected}
-			<button
-				class="send-to-front"
-				onclick={() => {
-					d.z = getMaxZIndex() + 1;
-				}}>send to front</button
-			>
-			<button
-				class="send-to-back"
-				onclick={() => {
-					d.z = getMinZIndex() - 1;
-				}}>send to back</button
-			>
+			<div class="draggable-title-bar">
+				<button
+					onclick={() => {
+						d.z = getMaxZIndex() + 1;
+					}}>send to front</button
+				>
+				<button
+					onclick={() => {
+						d.z = getMinZIndex() - 1;
+					}}>send to back</button
+				>
+			</div>
 			<div class="resize-handle nw" data-corner="nw"></div>
 			<div class="resize-handle ne" data-corner="ne"></div>
 			<div class="resize-handle sw" data-corner="sw"></div>
@@ -346,6 +347,36 @@
 		background: black;
 		overflow: hidden;
 	}
+
+	.draggable-title-bar {
+		position: absolute;
+		top: -30px;
+		width: calc(100% - 6px);
+		height: 20px;
+		border-radius: 5px 5px 0 0;
+		padding: 5px 5px;
+		background: linear-gradient(
+			to bottom,
+			#245edb 0%,
+			#2153c2 3%,
+			#1941a5 6%,
+			#183890 10%,
+			#192f72 14%,
+			#182863 19%,
+			#172558 63%,
+			#171f48 81%,
+			#171c42 88%,
+			#171a3f 91%,
+			#171a3f 94%,
+			#171839 97%,
+			#171839 100%
+		);
+	}
+
+	.draggable-title-bar button {
+		float: right;
+	}
+
 	.draggable-container {
 		display: inline-block;
 		user-select: none;
