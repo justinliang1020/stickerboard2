@@ -356,7 +356,7 @@
 
 <style>
 	:global(body) {
-		background: black;
+		background: white;
 		overflow: hidden;
 	}
 
@@ -411,18 +411,6 @@
 
 	.selected {
 		border-color: #172558;
-	}
-
-	.send-to-front {
-		position: absolute;
-		top: -30px;
-		left: 5px;
-	}
-
-	.send-to-back {
-		position: absolute;
-		top: -30px;
-		right: 5px;
 	}
 
 	.resize-handle {
