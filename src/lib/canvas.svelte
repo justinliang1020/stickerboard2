@@ -28,7 +28,7 @@
 	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
 	addDraggable(
 		'text',
-		'meow',
+		"we're all just walking eachother home",
 		// 'Being with you and not being with you is the only way I have to measure time',
 		56,
 		284,
