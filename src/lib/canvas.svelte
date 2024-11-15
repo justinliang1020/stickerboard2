@@ -322,15 +322,24 @@
 		{#if d.isSelected}
 			<div class="draggable-title-bar">
 				<button
+					style="background-image: url('x-button.png')"
 					onclick={() => {
-						d.z = getMaxZIndex() + 1;
-					}}>send to front</button
+						deleteSelectedMedia();
+					}}
 				>
+				</button>
 				<button
+					style="background-image: url('send-to-back.png')"
 					onclick={() => {
 						d.z = getMinZIndex() - 1;
-					}}>send to back</button
-				>
+					}}
+				></button>
+				<button
+					style="background-image: url('send-to-front.png')"
+					onclick={() => {
+						d.z = getMaxZIndex() + 1;
+					}}
+				></button>
 			</div>
 			<div class="resize-handle nw" data-corner="nw"></div>
 			<div class="resize-handle ne" data-corner="ne"></div>
@@ -351,7 +360,8 @@
 	.draggable-title-bar {
 		position: absolute;
 		top: -30px;
-		width: calc(100% - 6px);
+		left: -3px;
+		width: calc(100% - 3px);
 		height: 20px;
 		border-radius: 5px 5px 0 0;
 		padding: 5px 5px;
@@ -375,6 +385,12 @@
 
 	.draggable-title-bar button {
 		float: right;
+		height: 100%;
+		aspect-ratio: 1 / 1;
+		border: none;
+		background-size: cover;
+		cursor: pointer;
+		margin-left: 3px;
 	}
 
 	.draggable-container {
@@ -391,7 +407,7 @@
 	}
 
 	.selected {
-		border-color: #001397;
+		border-color: #172558;
 	}
 
 	.send-to-front {
