@@ -17,6 +17,7 @@
 		isEditing: boolean;
 		isResizing: boolean;
 		isDragging: boolean;
+		isSegmenting: boolean;
 		imgEl: HTMLImageElement | null;
 		textAreaEl: HTMLTextAreaElement | null;
 		containerEl: HTMLDivElement | null;
@@ -105,6 +106,7 @@
 			isEditing: false,
 			isDragging: false,
 			isResizing: false,
+			isSegmenting: false,
 			imgEl: null,
 			textAreaEl: null,
 			containerEl: null,
@@ -206,6 +208,8 @@
 			mouseDownInfo.startY = event.clientY;
 			mouseDownInfo.startWidth = d.width;
 			mouseDownInfo.startHeight = d.height;
+		} else if (d.isSegmenting) {
+			//TODO: isSegmenting code
 		} else {
 			d.isSelected = true;
 			d.isDragging = true;
@@ -284,6 +288,7 @@
 		for (const d of draggables) {
 			if (target.closest('.draggable-container') !== d.containerEl) {
 				d.isSelected = false;
+				d.isSegmenting = false;
 			}
 		}
 	};
@@ -303,8 +308,8 @@
 		class="draggable-container"
 		class:selected={d.isSelected}
 		style="position: absolute; left: {d.x}px; top: {d.y}px; z-index: {d.z}; width: {d.width}px; height: {d.height}px;"
-		style:cursor="grab"
-		onmousedown={(e) => handleMouseDown(e, d)}
+		style:cursor={d.isSegmenting ? 'pointer' : 'grab'}
+		onmousedown={(e) => handleMouseDownDraggable(e, d)}
 		bind:this={d.containerEl}
 	>
 		{#if d.mediaFormat === 'img' || d.mediaFormat === 'gif'}
@@ -315,6 +320,9 @@
 				draggable="false"
 				bind:this={d.imgEl}
 			/>
+			{#if d.isSegmenting}
+				<canvas class="segmentation-canvas"></canvas>
+			{/if}
 		{:else if d.mediaFormat === 'text'}
 			<textarea
 				name=""
@@ -328,29 +336,47 @@
 
 		{#if d.isSelected}
 			<div class="draggable-title-bar">
-				<button
-					style="background-image: url('x-button.png')"
-					aria-label="delete"
-					onclick={() => {
-						deleteSelectedMedia();
-					}}
-				>
-				</button>
-				<button
-					style="background-image: url('send-to-back.png')"
-					aria-label="send-to-back"
-					onclick={() => {
-						d.z = getMinZIndex() - 1;
-					}}
-				></button>
-				<button
-					style="background-image: url('send-to-front.png')"
-					aria-label="send-to-front"
-					onclick={() => {
-						d.z = getMaxZIndex() + 1;
-					}}
-				></button>
+				{#if d.isSegmenting}
+					<button
+						onclick={() => {
+							d.isSegmenting = false;
+						}}>cancel</button
+					>
+					<button>reset</button>
+					<button>create</button>
+				{:else}
+					<button
+						style="background-image: url('x-button.png')"
+						aria-label="delete"
+						onclick={() => {
+							deleteSelectedMedia();
+						}}
+					>
+					</button>
+					<button
+						style="background-image: url('send-to-back.png')"
+						aria-label="send-to-back"
+						onclick={() => {
+							d.z = getMinZIndex() - 1;
+						}}
+					></button>
+					<button
+						style="background-image: url('send-to-front.png')"
+						aria-label="send-to-front"
+						onclick={() => {
+							d.z = getMaxZIndex() + 1;
+						}}
+					></button>
+					<button
+						onclick={() => {
+							d.isSegmenting = true;
+						}}
+					>
+						segment
+					</button>
+				{/if}
 			</div>
+
 			<div class="resize-handle nw" data-corner="nw"></div>
 			<div class="resize-handle ne" data-corner="ne"></div>
 			<div class="resize-handle sw" data-corner="sw"></div>
@@ -414,6 +440,15 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+	}
+
+	.segmentation-canvas {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background-color: rgba(0, 50, 0, 0.15);
 	}
 
 	.selected {
