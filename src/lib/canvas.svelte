@@ -19,8 +19,21 @@
 		containerEl: HTMLDivElement | null;
 		activeCorner: string | null;
 	};
+	type MouseDownInfo = {
+		startX: number;
+		startY: number;
+		startWidth: number;
+		startHeight: number;
+	};
 
 	let draggables: Draggable[] = $state([]);
+	const minImageSize = 50; // pixels
+	let mouseDownInfo: MouseDownInfo = {
+		startX: 0,
+		startY: 0,
+		startWidth: 0,
+		startHeight: 0
+	};
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
@@ -90,19 +103,6 @@
 		return Math.min(...draggables.map((d) => d.z), 0);
 	}
 
-	function handlePaste(event: ClipboardEvent) {
-		const items = event.clipboardData?.items;
-		if (!items) return;
-		Array.from(items).some((item) => {
-			if (item.type.startsWith('image')) {
-				const file = item.getAsFile();
-				if (file) processFileAndAddDraggable(file);
-				return true;
-			}
-			return false;
-		});
-	}
-
 	function processFileAndAddDraggable(file: File) {
 		if (!file) return;
 		const reader = new FileReader();
@@ -131,7 +131,20 @@
 		return false;
 	}
 
-	function handleKeyDown(event: KeyboardEvent) {
+	const handlePaste = (event: ClipboardEvent) => {
+		const items = event.clipboardData?.items;
+		if (!items) return;
+		Array.from(items).some((item) => {
+			if (item.type.startsWith('image')) {
+				const file = item.getAsFile();
+				if (file) processFileAndAddDraggable(file);
+				return true;
+			}
+			return false;
+		});
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
 		switch (true) {
 			case event.key === 'Backspace' || event.key === 'Delete':
 				if (!anyDraggablesAreEditing()) {
@@ -153,46 +166,40 @@
 				event.preventDefault();
 				break;
 		}
-	}
+	};
 
-	const minImageSize = 50; // pixels
-	let mouseDownStartX: number;
-	let mouseDownStartY: number;
-	let mouseDownStartWidth: number;
-	let mouseDownStartHeight: number;
-
-	function handleMouseDown(event: MouseEvent, d: Draggable) {
+	const handleMouseDown = (event: MouseEvent, d: Draggable) => {
 		const target = event.target as HTMLElement;
 		if (target.classList.contains('resize-handle')) {
 			d.isDragging = false;
 			d.isResizing = true;
 			d.activeCorner = target.dataset.corner || null;
-			mouseDownStartX = event.clientX;
-			mouseDownStartY = event.clientY;
-			mouseDownStartWidth = d.width;
-			mouseDownStartHeight = d.height;
+			mouseDownInfo.startX = event.clientX;
+			mouseDownInfo.startY = event.clientY;
+			mouseDownInfo.startWidth = d.width;
+			mouseDownInfo.startHeight = d.height;
 		} else {
 			d.isDragging = true;
-			mouseDownStartX = event.clientX - d.x;
-			mouseDownStartY = event.clientY - d.y;
+			mouseDownInfo.startX = event.clientX - d.x;
+			mouseDownInfo.startY = event.clientY - d.y;
 		}
 		d.isSelected = true;
 		if (!d.isDragging && !d.isResizing) {
 			d.isSelected = !d.isSelected;
 		}
-	}
+	};
 
-	function handleMouseMove(event: MouseEvent) {
+	const handleMouseMove = (event: MouseEvent) => {
 		const d: Draggable | null = draggables.find((d) => d.isSelected) || null;
 		if (d === null) {
 			return;
 		}
 		if (d.isDragging) {
-			d.x = event.clientX - mouseDownStartX;
-			d.y = event.clientY - mouseDownStartY;
+			d.x = event.clientX - mouseDownInfo.startX;
+			d.y = event.clientY - mouseDownInfo.startY;
 		} else if (d.isResizing && d.activeCorner) {
-			const dx = event.clientX - mouseDownStartX;
-			const dy = event.clientY - mouseDownStartY;
+			const dx = event.clientX - mouseDownInfo.startX;
+			const dy = event.clientY - mouseDownInfo.startY;
 			let ratio: number;
 			const originalWidth = d.width;
 			const originalHeight = d.height;
@@ -200,61 +207,61 @@
 			switch (d.activeCorner) {
 				case 'nw':
 					ratio = Math.sqrt(
-						(Math.max(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
-							(Math.max(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownInfo.startWidth - dx, 0) / mouseDownInfo.startWidth) *
+							(Math.max(mouseDownInfo.startHeight - dy, 0) / mouseDownInfo.startHeight)
 					);
-					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
-					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownInfo.startWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownInfo.startHeight * ratio, minImageSize);
 					d.x -= d.width - originalWidth;
 					d.y -= d.height - originalHeight;
 					break;
 				case 'ne':
 					ratio = Math.sqrt(
-						(Math.max(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
-							(Math.max(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownInfo.startWidth + dx, 0) / mouseDownInfo.startWidth) *
+							(Math.max(mouseDownInfo.startHeight - dy, 0) / mouseDownInfo.startHeight)
 					);
-					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
-					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownInfo.startWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownInfo.startHeight * ratio, minImageSize);
 					d.y -= d.height - originalHeight;
 					break;
 				case 'sw':
 					ratio = Math.sqrt(
-						(Math.max(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
-							(Math.max(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownInfo.startWidth - dx, 0) / mouseDownInfo.startWidth) *
+							(Math.max(mouseDownInfo.startHeight + dy, 0) / mouseDownInfo.startHeight)
 					);
-					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
-					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownInfo.startWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownInfo.startHeight * ratio, minImageSize);
 					d.x -= d.width - originalWidth;
 					break;
 				case 'se':
 					ratio = Math.sqrt(
-						(Math.max(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
-							(Math.max(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownInfo.startWidth + dx, 0) / mouseDownInfo.startWidth) *
+							(Math.max(mouseDownInfo.startHeight + dy, 0) / mouseDownInfo.startHeight)
 					);
-					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
-					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownInfo.startWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownInfo.startHeight * ratio, minImageSize);
 					break;
 			}
 		}
-	}
+	};
 
-	function handleMouseUp() {
+	const handleMouseUp = () => {
 		// TODO: unsure
 		for (const d of draggables) {
 			d.isDragging = false;
 			d.isResizing = false;
 			d.activeCorner = null;
 		}
-	}
+	};
 
-	function handleWindowMouseDown(event: MouseEvent) {
+	const handleWindowMouseDown = (event: MouseEvent) => {
 		const target = event.target as HTMLElement;
 		for (const d of draggables) {
 			if (target.closest('.draggable-container') !== d.containerEl) {
 				d.isSelected = false;
 			}
 		}
-	}
+	};
 </script>
 
 <svelte:window
