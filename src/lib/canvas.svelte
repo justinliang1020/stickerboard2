@@ -4,7 +4,7 @@
 	import { setup_sam_model, type ImageEmbeddings, type ImageProcessed } from './segmentation';
 	import { Processor, SamModel } from '@huggingface/transformers';
 
-	type MediaFormat = 'img' | 'text';
+	type MediaFormat = 'img' | 'gif' | 'text';
 	type Draggable = {
 		mediaFormat: MediaFormat;
 		src: string;
@@ -46,7 +46,7 @@
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
-	addDraggable('img', 'sphere.gif', 942, 185, 200, 200);
+	addDraggable('gif', 'sphere.gif', 942, 185, 200, 200);
 	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
 	addDraggable(
 		'text',
@@ -120,12 +120,17 @@
 		return Math.min(...draggables.map((d) => d.z), 0);
 	}
 
-	function processFileAndAddDraggable(file: File) {
+	function processFileAndAddDraggable(file: File, mediaFormat: MediaFormat) {
 		if (!file) return;
 		const reader = new FileReader();
 		reader.onload = (e: ProgressEvent<FileReader>) => {
 			const result = e.target?.result;
-			if (result) addDraggable('img', result as string);
+			if (!result) return;
+			if (mediaFormat == 'img') {
+				addDraggable('img', result as string);
+			} else if (mediaFormat == 'gif') {
+				addDraggable('gif', result as string);
+			}
 		};
 		reader.readAsDataURL(file);
 	}
@@ -154,11 +159,15 @@
 		const items = event.clipboardData?.items;
 		if (!items) return;
 		Array.from(items).some((item) => {
-			if (item.type.startsWith('image')) {
-				const file = item.getAsFile();
-				if (file) processFileAndAddDraggable(file);
+			const file = item.getAsFile();
+			if (item.type.startsWith('image/gif')) {
+				if (file) processFileAndAddDraggable(file, 'gif');
+				return true;
+			} else if (item.type.startsWith('image')) {
+				if (file) processFileAndAddDraggable(file, 'img');
 				return true;
 			}
+
 			return false;
 		});
 	};
@@ -301,7 +310,7 @@
 		onmousedown={(e) => handleMouseDown(e, d)}
 		bind:this={d.containerEl}
 	>
-		{#if d.mediaFormat === 'img'}
+		{#if d.mediaFormat === 'img' || d.mediaFormat === 'gif'}
 			<img
 				src={d.src}
 				alt={d.src.substring(0, 50)}
