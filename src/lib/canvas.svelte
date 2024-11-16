@@ -36,7 +36,7 @@
 		300
 	);
 
-	export function addDraggable(
+	function addDraggable(
 		mediaFormat: MediaFormat,
 		src: string,
 		x: number = 100,
@@ -131,27 +131,6 @@
 		return false;
 	}
 
-	// async function copySelectedImageToClipboard() {
-	// 	try {
-	// 		const selectedMedia = draggables.find((d) => d.isSelected);
-	// 		// Fetch the image data from the URL
-	// 		const response = await fetch(selectedMedia.src);
-	// 		const blob = await response.blob();
-	//
-	// 		// Create a ClipboardItem with the image blob
-	// 		const item = new ClipboardItem({
-	// 			'image/png': blob // You can specify other MIME types if necessary
-	// 		});
-	//
-	// 		// Write the ClipboardItem to the clipboard
-	// 		await navigator.clipboard.write([item]);
-	//
-	// 		console.log('Image copied to clipboard!');
-	// 	} catch (error) {
-	// 		console.error('Failed to copy image to clipboard: ', error);
-	// 	}
-	// }
-	//
 	function handleKeyDown(event: KeyboardEvent) {
 		switch (true) {
 			case event.key === 'Backspace' || event.key === 'Delete':
