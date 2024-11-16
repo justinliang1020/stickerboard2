@@ -203,10 +203,6 @@
 		}
 	}
 
-	function clamp(x: number, y: number) {
-		return Math.max(x, y);
-	}
-
 	function handleMouseMove(event: MouseEvent) {
 		const d: Draggable | null = draggables.find((d) => d.isSelected) || null;
 		if (d === null) {
@@ -225,39 +221,39 @@
 			switch (d.activeCorner) {
 				case 'nw':
 					ratio = Math.sqrt(
-						(clamp(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
-							(clamp(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
+							(Math.max(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
 					);
-					d.width = clamp(mouseDownStartWidth * ratio, minImageSize);
-					d.height = clamp(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
 					d.x -= d.width - originalWidth;
 					d.y -= d.height - originalHeight;
 					break;
 				case 'ne':
 					ratio = Math.sqrt(
-						(clamp(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
-							(clamp(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
+							(Math.max(mouseDownStartHeight - dy, 0) / mouseDownStartHeight)
 					);
-					d.width = clamp(mouseDownStartWidth * ratio, minImageSize);
-					d.height = clamp(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
 					d.y -= d.height - originalHeight;
 					break;
 				case 'sw':
 					ratio = Math.sqrt(
-						(clamp(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
-							(clamp(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownStartWidth - dx, 0) / mouseDownStartWidth) *
+							(Math.max(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
 					);
-					d.width = clamp(mouseDownStartWidth * ratio, minImageSize);
-					d.height = clamp(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
 					d.x -= d.width - originalWidth;
 					break;
 				case 'se':
 					ratio = Math.sqrt(
-						(clamp(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
-							(clamp(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
+						(Math.max(mouseDownStartWidth + dx, 0) / mouseDownStartWidth) *
+							(Math.max(mouseDownStartHeight + dy, 0) / mouseDownStartHeight)
 					);
-					d.width = clamp(mouseDownStartWidth * ratio, minImageSize);
-					d.height = clamp(mouseDownStartHeight * ratio, minImageSize);
+					d.width = Math.max(mouseDownStartWidth * ratio, minImageSize);
+					d.height = Math.max(mouseDownStartHeight * ratio, minImageSize);
 					break;
 			}
 		}
