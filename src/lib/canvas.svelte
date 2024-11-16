@@ -1,5 +1,8 @@
 <script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
+	import { onMount } from 'svelte';
+	import { setup_sam_model, type ImageEmbeddings, type ImageProcessed } from './segmentation';
+	import { Processor, SamModel } from '@huggingface/transformers';
 
 	type MediaFormat = 'img' | 'text';
 	type Draggable = {
@@ -34,6 +37,12 @@
 		startWidth: 0,
 		startHeight: 0
 	};
+	let segmentationInfo: {
+		processor?: Processor;
+		model?: SamModel;
+		selectedImageProcessed?: ImageProcessed;
+		selectedImageEmbeddings?: ImageEmbeddings;
+	} = {};
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
@@ -48,6 +57,32 @@
 		300,
 		300
 	);
+
+	$effect(() => {
+		for (const d of draggables) {
+			if (d.imgEl) {
+				d.imgEl.onload = function () {
+					if (d.imgEl) {
+						const maxRatio = 4 / 3;
+						const scaleFactor = Math.max(
+							(d.imgEl.naturalWidth * maxRatio) / window.innerWidth,
+							(d.imgEl.naturalHeight * maxRatio) / window.innerHeight
+						);
+						d.width = Math.min(d.imgEl.naturalWidth, d.imgEl.naturalWidth / scaleFactor);
+						d.height = Math.min(d.imgEl.naturalHeight, d.imgEl.naturalHeight / scaleFactor);
+					}
+				};
+			}
+		}
+	});
+
+	onMount(async () => {
+		const { processor, model } = await setup_sam_model('Xenova/slimsam-77-uniform');
+		segmentationInfo.processor = processor;
+		segmentationInfo.model = model;
+	});
+
+	// Draggables manipulation functions
 
 	function addDraggable(
 		mediaFormat: MediaFormat,
@@ -76,24 +111,6 @@
 			activeCorner: null
 		});
 	}
-
-	$effect(() => {
-		for (const d of draggables) {
-			if (d.imgEl) {
-				d.imgEl.onload = function () {
-					if (d.imgEl) {
-						const maxRatio = 4 / 3;
-						const scaleFactor = Math.max(
-							(d.imgEl.naturalWidth * maxRatio) / window.innerWidth,
-							(d.imgEl.naturalHeight * maxRatio) / window.innerHeight
-						);
-						d.width = Math.min(d.imgEl.naturalWidth, d.imgEl.naturalWidth / scaleFactor);
-						d.height = Math.min(d.imgEl.naturalHeight, d.imgEl.naturalHeight / scaleFactor);
-					}
-				};
-			}
-		}
-	});
 
 	function getMaxZIndex(): number {
 		return Math.max(...draggables.map((d) => d.z), 0);
@@ -130,6 +147,8 @@
 		}
 		return false;
 	}
+
+	// event listener callback functions
 
 	const handlePaste = (event: ClipboardEvent) => {
 		const items = event.clipboardData?.items;
