@@ -196,7 +196,7 @@
 		}
 	};
 
-	const handleMouseDown = (event: MouseEvent, d: Draggable) => {
+	const handleMouseDownDraggable = (event: MouseEvent, d: Draggable) => {
 		const target = event.target as HTMLElement;
 		if (target.classList.contains('resize-handle')) {
 			d.isDragging = false;
@@ -207,13 +207,10 @@
 			mouseDownInfo.startWidth = d.width;
 			mouseDownInfo.startHeight = d.height;
 		} else {
+			d.isSelected = true;
 			d.isDragging = true;
 			mouseDownInfo.startX = event.clientX - d.x;
 			mouseDownInfo.startY = event.clientY - d.y;
-		}
-		d.isSelected = true;
-		if (!d.isDragging && !d.isResizing) {
-			d.isSelected = !d.isSelected;
 		}
 	};
 
