@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
 	import { onMount } from 'svelte';
-	import { Segmentation } from './segmentation.svelte';
+	import { segmentation } from './segmentation.svelte';
 
 	type MediaFormat = 'img' | 'gif' | 'text';
 	type Draggable = {
@@ -37,7 +37,7 @@
 		startWidth: 0,
 		startHeight: 0
 	};
-	const segmentation = new Segmentation('Xenova/slimsam-77-uniform');
+	let segmentationCanvas: HTMLCanvasElement | undefined = $state();
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
@@ -69,6 +69,7 @@
 				};
 			}
 		}
+		segmentation.canvas = segmentationCanvas;
 	});
 
 	onMount(async () => {
@@ -314,7 +315,18 @@
 				bind:this={d.imgEl}
 			/>
 			{#if d.isSegmenting}
-				<canvas class="segmentation-canvas"></canvas>
+				<canvas class="segmentation-canvas" bind:this={segmentationCanvas}></canvas>
+				<div
+					style="
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+          "
+					onmousedown={(e) => segmentation.handleContainerMouseDown(e)}
+					onmousemove={(e) => segmentation.handleContainerMouseMove(e)}
+				></div>
 				{#if segmentation.isEncoding}
 					<p style="color: white;">encoding...</p>
 				{/if}
@@ -368,7 +380,6 @@
 							onclick={async () => {
 								d.isSegmenting = true;
 								await segmentation.encode(d.src);
-								console.log(segmentation.imageEmbeddings);
 							}}
 						>
 							segment

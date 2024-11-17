@@ -32,11 +32,13 @@ export class Segmentation {
   samModelId: string;
   isDecoding: boolean = false;
   isEncoding: boolean = $state(false);
+  isMultiMaskMode: boolean = false;
   decodePending: boolean = false;
-  canvas?: HTMLCanvasElement;
+  canvas?: HTMLCanvasElement = $state();
+  lastPoints: Point[] = [];
 
 
-  constructor(samModelId: string) {
+  constructor(samModelId: string = 'Xenova/slimsam-77-uniform') {
     this.samModelId = samModelId
   }
 
@@ -59,10 +61,9 @@ export class Segmentation {
     this.isEncoding = false;
   }
 
-  async decode(lastPoints: Point[]) {
+  async decode() {
     // Prepare inputs for decoding
     if (!this.processor || !this.model || !this.imageProcessed || !this.imageEmbeddings) return;
-
 
     if (this.isDecoding) {
       this.decodePending = true;
@@ -71,12 +72,12 @@ export class Segmentation {
     this.isDecoding = true;
 
     const reshaped = this.imageProcessed.reshaped_input_sizes[0];
-    const points = lastPoints
+    const points = this.lastPoints
       .map((x) => [x.position[0] * reshaped[1], x.position[1] * reshaped[0]])
       .flat(Infinity);
-    const labels = lastPoints.map((x) => BigInt(x.label)).flat(Infinity);
+    const labels = this.lastPoints.map((x) => BigInt(x.label)).flat(Infinity);
 
-    const num_points = lastPoints.length;
+    const num_points = this.lastPoints.length;
     const input_points = new Tensor("float32", points, [1, 1, num_points, 2]);
     const input_labels = new Tensor("int64", labels, [1, 1, num_points]);
 
@@ -94,6 +95,8 @@ export class Segmentation {
       this.imageProcessed.reshaped_input_sizes,
     );
 
+    console.log(masks)
+
     this.isDecoding = false;
 
     // updateMaskOverlay(RawImage.fromTensor(masks[0][0]), iou_scores.data);
@@ -101,10 +104,77 @@ export class Segmentation {
     // Check if another decode is pending
     if (this.decodePending) {
       this.decodePending = false;
-      this.decode(lastPoints);
+      this.decode();
     }
   }
+
+
+  getPoint(e: MouseEvent): Point | null {
+    // Get bounding box
+    const bb = (e.currentTarget as HTMLCanvasElement).getBoundingClientRect();
+
+    // Get the mouse coordinates relative to the container
+    const mouseX = clamp((e.clientX - bb.left) / bb.width);
+    const mouseY = clamp((e.clientY - bb.top) / bb.height);
+
+    return {
+      position: [mouseX, mouseY],
+      label:
+        e.button === 2 // right click
+          ? 0 // negative prompt
+          : 1, // positive prompt
+    };
+  }
+
+  handleContainerMouseMove(e: MouseEvent) {
+    if (!this.imageEmbeddings || this.isMultiMaskMode) {
+      // Ignore mousemove events if the image is not encoded yet,
+      // or we are in multi-mask mode
+      return;
+    }
+
+    console.log(this.canvas)
+    const p = this.getPoint(e)
+    if (p)
+      this.lastPoints = [p];
+
+    this.decode();
+  }
+
+  handleContainerMouseDown(e: MouseEvent) {
+    const canvas = e.currentTarget as HTMLCanvasElement;
+    if (e.button !== 0 && e.button !== 2) {
+      return; // Ignore other buttons
+    }
+    if (!this.imageEmbeddings || this.isEncoding) {
+      return; // Ignore if not encoded yet
+    }
+    if (!this.isMultiMaskMode) {
+      this.lastPoints = [];
+      this.isMultiMaskMode = true;
+      // this.cutButton.disabled = false;
+    }
+
+    const point = this.getPoint(e);
+    if (!point) return;
+    this.lastPoints.push(point);
+
+    // add icon
+    const icon = document.createElement("span")
+    icon.appendChild(document.createTextNode(point.label === 1 ? "⭐️" : "❌"));
+    icon.style.left = `${point.position[0] * 100}%`;
+    icon.style.top = `${point.position[1] * 100}%`;
+    icon.style.position = 'absolute';
+    icon.style.zIndex = '99999'
+    canvas.appendChild(icon);
+
+    // Run decode
+    // decode();
+
+  }
 }
+
+export const segmentation = new Segmentation('Xenova/slimsam-77-uniform')
 
 type Point = {
   position: number[];
@@ -116,19 +186,3 @@ function clamp(x: number, min = 0, max = 1) {
   return Math.max(Math.min(x, max), min);
 }
 
-function getPoint(e: MouseEvent, imageContainer: HTMLImageElement): Point {
-  // Get bounding box
-  const bb = imageContainer.getBoundingClientRect();
-
-  // Get the mouse coordinates relative to the container
-  const mouseX = clamp((e.clientX - bb.left) / bb.width);
-  const mouseY = clamp((e.clientY - bb.top) / bb.height);
-
-  return {
-    position: [mouseX, mouseY],
-    label:
-      e.button === 2 // right click
-        ? 0 // negative prompt
-        : 1, // positive prompt
-  };
-}
