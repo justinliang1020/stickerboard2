@@ -21,6 +21,7 @@
 		textAreaEl: HTMLTextAreaElement | null;
 		containerEl: HTMLDivElement | null;
 		activeCorner: string | null;
+		autoscale: boolean;
 	};
 	type MouseDownInfo = {
 		startX: number;
@@ -57,7 +58,7 @@
 		for (const d of draggables) {
 			if (d.imgEl) {
 				d.imgEl.onload = function () {
-					if (d.imgEl) {
+					if (d.imgEl && d.autoscale) {
 						const maxRatio = 4 / 3;
 						const scaleFactor = Math.max(
 							(d.imgEl.naturalWidth * maxRatio) / window.innerWidth,
@@ -85,7 +86,8 @@
 		x: number = 100,
 		y: number = 100,
 		width: number = 200,
-		height: number = 200
+		height: number = 200,
+		autoscale: boolean = true
 	) {
 		const z = getMaxZIndex() + 1;
 		draggables.push({
@@ -104,7 +106,8 @@
 			imgEl: null,
 			textAreaEl: null,
 			containerEl: null,
-			activeCorner: null
+			activeCorner: null,
+			autoscale
 		});
 	}
 
@@ -352,7 +355,14 @@
 						}}>cancel</button
 					>
 					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
-					<button>create</button>
+					<button
+						onclick={async () => {
+							const cutoutImageUrl = await segmentation.createCutOut();
+							if (cutoutImageUrl) {
+								addDraggable('img', cutoutImageUrl, 0, 0, d.width, d.height, false);
+							}
+						}}>create</button
+					>
 				{:else}
 					<button
 						style="background-image: url('x-button.png')"

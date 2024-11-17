@@ -29,6 +29,7 @@ export class Segmentation {
   model?: SamModel;
   imageProcessed?: ImageFeatureExtractorResult;
   imageEmbeddings?: ImageEmbeddings;
+  imageInput?: RawImage;
   samModelId: string;
   isDecoding: boolean = false;
   isEncoding: boolean = $state(false);
@@ -62,8 +63,8 @@ export class Segmentation {
   async encode(image_url: string) {
     if (!this.processor || !this.model || this.isEncoding) return;
     this.isEncoding = true;
-    const imageInput = await RawImage.fromURL(image_url);
-    this.imageProcessed = await this.processor(imageInput);
+    this.imageInput = await RawImage.fromURL(image_url);
+    this.imageProcessed = await this.processor(this.imageInput);
     if (this.imageProcessed)
       this.imageEmbeddings = await this.model.get_image_embeddings(this.imageProcessed);
     this.isEncoding = false;
@@ -152,6 +153,42 @@ export class Segmentation {
 
     // Draw image data to context
     this.maskContext.putImageData(imageData, 0, 0);
+  }
+
+  async createCutOut() {
+    if (!this.maskCanvas || !this.maskContext || !this.imageInput) {
+      console.error(`Missing one of the following - maskCanvas: ${this.maskCanvas}, maskContext: ${this.maskContext}, imageInput: ${this.imageInput}`)
+      return;
+    }
+    const [w, h] = [this.maskCanvas.width, this.maskCanvas.height];
+
+    // Get the mask pixel data (and use this as a buffer)
+    const maskImageData = this.maskContext.getImageData(0, 0, w, h);
+
+    // Create a new canvas to hold the cut-out
+    const cutCanvas = new OffscreenCanvas(w, h);
+    const cutContext = cutCanvas.getContext("2d") as OffscreenCanvasRenderingContext2D;
+
+    // Copy the image pixel data to the cut canvas
+    const maskPixelData = maskImageData.data;
+
+    // TODO: maybe resize data?
+    const imagePixelData = this.imageInput.data;
+    for (let i = 0; i < w * h; ++i) {
+      const sourceOffset = 3 * i; // RGB
+      const targetOffset = 4 * i; // RGBA
+
+      if (maskPixelData[targetOffset + 3] > 0) {
+        // Only copy opaque pixels
+        for (let j = 0; j < 3; ++j) {
+          maskPixelData[targetOffset + j] = imagePixelData[sourceOffset + j];
+        }
+      }
+    }
+    cutContext.putImageData(maskImageData, 0, 0);
+
+    // Download image
+    return URL.createObjectURL(await cutCanvas.convertToBlob());
   }
 
   clearPointsAndMask() {
