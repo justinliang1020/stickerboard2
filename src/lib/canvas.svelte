@@ -69,7 +69,7 @@
 				};
 			}
 		}
-		segmentation.canvas = segmentationCanvas;
+		segmentation.maskCanvas = segmentationCanvas;
 	});
 
 	onMount(async () => {
@@ -158,10 +158,10 @@
 			const file = item.getAsFile();
 			if (item.type.startsWith('image/gif')) {
 				if (file) processFileAndAddDraggable(file, 'gif');
-				return true;
+				return;
 			} else if (item.type.startsWith('image')) {
 				if (file) processFileAndAddDraggable(file, 'img');
-				return true;
+				return;
 			}
 
 			return false;
@@ -348,6 +348,7 @@
 					<button
 						onclick={async () => {
 							d.isSegmenting = false;
+							segmentation.reset();
 						}}>cancel</button
 					>
 					<button>reset</button>

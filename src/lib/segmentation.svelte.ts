@@ -34,12 +34,20 @@ export class Segmentation {
   isEncoding: boolean = $state(false);
   isMultiMaskMode: boolean = false;
   decodePending: boolean = false;
-  canvas?: HTMLCanvasElement = $state();
+  maskCanvas?: HTMLCanvasElement = $state();
+  maskContext = $derived(this.maskCanvas?.getContext("2d"))
   lastPoints: Point[] = [];
-
 
   constructor(samModelId: string = 'Xenova/slimsam-77-uniform') {
     this.samModelId = samModelId
+  }
+
+  reset() {
+    this.lastPoints = [];
+    this.isEncoding = false;
+    this.isDecoding = false;
+    this.isMultiMaskMode = false;
+    this.decodePending = false;
   }
 
   async setup_sam_model() {
@@ -95,11 +103,10 @@ export class Segmentation {
       this.imageProcessed.reshaped_input_sizes,
     );
 
-    console.log(masks)
 
     this.isDecoding = false;
 
-    // updateMaskOverlay(RawImage.fromTensor(masks[0][0]), iou_scores.data);
+    this.updateMaskOverlay(RawImage.fromTensor(masks[0][0]), iou_scores.data);
 
     // Check if another decode is pending
     if (this.decodePending) {
@@ -108,6 +115,44 @@ export class Segmentation {
     }
   }
 
+  updateMaskOverlay(mask: any, scores: any) {
+    // Update canvas dimensions (if different)
+    if (!this.maskCanvas || !this.maskContext) return;
+    if (this.maskCanvas.width !== mask.width || this.maskCanvas.height !== mask.height) {
+      this.maskCanvas.width = mask.width;
+      this.maskCanvas.height = mask.height;
+    }
+
+    // Allocate buffer for pixel data
+    const imageData = this.maskContext.createImageData(
+      this.maskCanvas.width,
+      this.maskCanvas.height,
+    );
+
+    // Select best mask
+    const numMasks = scores.length; // 3
+    let bestIndex = 0;
+    for (let i = 1; i < numMasks; ++i) {
+      if (scores[i] > scores[bestIndex]) {
+        bestIndex = i;
+      }
+    }
+
+    // Fill mask with colour
+    const pixelData = imageData.data;
+    for (let i = 0; i < pixelData.length; ++i) {
+      if (mask.data[numMasks * i + bestIndex] === 1) {
+        const offset = 4 * i;
+        pixelData[offset] = 0; // red
+        pixelData[offset + 1] = 114; // green
+        pixelData[offset + 2] = 189; // blue
+        pixelData[offset + 3] = 255; // alpha
+      }
+    }
+
+    // Draw image data to context
+    this.maskContext.putImageData(imageData, 0, 0);
+  }
 
   getPoint(e: MouseEvent): Point | null {
     // Get bounding box
@@ -133,7 +178,6 @@ export class Segmentation {
       return;
     }
 
-    console.log(this.canvas)
     const p = this.getPoint(e)
     if (p)
       this.lastPoints = [p];
@@ -142,7 +186,7 @@ export class Segmentation {
   }
 
   handleContainerMouseDown(e: MouseEvent) {
-    const canvas = e.currentTarget as HTMLCanvasElement;
+    const container = e.currentTarget as HTMLCanvasElement;
     if (e.button !== 0 && e.button !== 2) {
       return; // Ignore other buttons
     }
@@ -166,10 +210,10 @@ export class Segmentation {
     icon.style.top = `${point.position[1] * 100}%`;
     icon.style.position = 'absolute';
     icon.style.zIndex = '99999'
-    canvas.appendChild(icon);
+    container.appendChild(icon);
 
     // Run decode
-    // decode();
+    this.decode();
 
   }
 }
