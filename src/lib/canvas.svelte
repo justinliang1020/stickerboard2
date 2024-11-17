@@ -1,8 +1,7 @@
 <script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
 	import { onMount } from 'svelte';
-	import { setup_sam_model, type ImageEmbeddings, type ImageProcessed } from './segmentation';
-	import { Processor, SamModel } from '@huggingface/transformers';
+	import { Segmentation } from './segmentation';
 
 	type MediaFormat = 'img' | 'gif' | 'text';
 	type Draggable = {
@@ -38,12 +37,8 @@
 		startWidth: 0,
 		startHeight: 0
 	};
-	let segmentationInfo: {
-		processor?: Processor;
-		model?: SamModel;
-		selectedImageProcessed?: ImageProcessed;
-		selectedImageEmbeddings?: ImageEmbeddings;
-	} = {};
+	const segmentation = new Segmentation('Xenova/slimsam-77-uniform');
+	let isEncoding = $state(false);
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
@@ -78,9 +73,7 @@
 	});
 
 	onMount(async () => {
-		const { processor, model } = await setup_sam_model('Xenova/slimsam-77-uniform');
-		segmentationInfo.processor = processor;
-		segmentationInfo.model = model;
+		await segmentation.setup_sam_model();
 	});
 
 	// Draggables manipulation functions
@@ -322,6 +315,9 @@
 			/>
 			{#if d.isSegmenting}
 				<canvas class="segmentation-canvas"></canvas>
+				{#if isEncoding}
+					<p style="color: white;">encoding...</p>
+				{/if}
 			{/if}
 		{:else if d.mediaFormat === 'text'}
 			<textarea
@@ -367,13 +363,16 @@
 							d.z = getMaxZIndex() + 1;
 						}}
 					></button>
-					<button
-						onclick={() => {
-							d.isSegmenting = true;
-						}}
-					>
-						segment
-					</button>
+					{#if d.mediaFormat === 'img'}
+						<button
+							onclick={async () => {
+								d.isSegmenting = true;
+								segmentation.encode(d.src);
+							}}
+						>
+							segment
+						</button>
+					{/if}
 				{/if}
 			</div>
 
