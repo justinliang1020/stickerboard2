@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Taskbar from '$lib/taskbar.svelte';
 	import { onMount } from 'svelte';
-	import { Segmentation } from './segmentation';
+	import { Segmentation } from './segmentation.svelte';
 
 	type MediaFormat = 'img' | 'gif' | 'text';
 	type Draggable = {
@@ -38,7 +38,6 @@
 		startHeight: 0
 	};
 	const segmentation = new Segmentation('Xenova/slimsam-77-uniform');
-	let isEncoding = $state(false);
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
@@ -73,6 +72,7 @@
 	});
 
 	onMount(async () => {
+		//TODO: call this in a separate thread to not block the main thread/allow images to be clicked befeore this is loaded
 		await segmentation.setup_sam_model();
 	});
 
@@ -315,7 +315,7 @@
 			/>
 			{#if d.isSegmenting}
 				<canvas class="segmentation-canvas"></canvas>
-				{#if isEncoding}
+				{#if segmentation.isEncoding}
 					<p style="color: white;">encoding...</p>
 				{/if}
 			{/if}
@@ -334,7 +334,7 @@
 			<div class="draggable-title-bar">
 				{#if d.isSegmenting}
 					<button
-						onclick={() => {
+						onclick={async () => {
 							d.isSegmenting = false;
 						}}>cancel</button
 					>
@@ -367,7 +367,8 @@
 						<button
 							onclick={async () => {
 								d.isSegmenting = true;
-								segmentation.encode(d.src);
+								await segmentation.encode(d.src);
+								console.log(segmentation.imageEmbeddings);
 							}}
 						>
 							segment
