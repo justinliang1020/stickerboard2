@@ -154,6 +154,19 @@ export class Segmentation {
     this.maskContext.putImageData(imageData, 0, 0);
   }
 
+  clearPointsAndMask() {
+    // Reset state
+    this.isMultiMaskMode = false;
+    this.lastPoints = [];
+
+    // Remove points from previous mask (if any)
+    document.querySelectorAll(".segment-icon").forEach((e) => e.remove());
+
+    // Reset mask canvas
+    if (this.maskContext && this.maskCanvas)
+      this.maskContext.clearRect(0, 0, this.maskCanvas.width, this.maskCanvas.height);
+  }
+
   getPoint(e: MouseEvent): Point | null {
     // Get bounding box
     const bb = (e.currentTarget as HTMLCanvasElement).getBoundingClientRect();
@@ -210,6 +223,7 @@ export class Segmentation {
     icon.style.top = `${point.position[1] * 100}%`;
     icon.style.position = 'absolute';
     icon.style.zIndex = '99999'
+    icon.classList.add("segment-icon")
     container.appendChild(icon);
 
     // Run decode

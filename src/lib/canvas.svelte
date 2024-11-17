@@ -351,7 +351,7 @@
 							segmentation.reset();
 						}}>cancel</button
 					>
-					<button>reset</button>
+					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
 					<button>create</button>
 				{:else}
 					<button
