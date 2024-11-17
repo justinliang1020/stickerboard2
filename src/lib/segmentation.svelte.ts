@@ -71,7 +71,7 @@ export class Segmentation {
 
   async decode() {
     // Prepare inputs for decoding
-    if (!this.processor || !this.model || !this.imageProcessed || !this.imageEmbeddings) return;
+    if (!this.processor || !this.model || !this.imageProcessed || !this.imageEmbeddings || this.isEncoding) return;
 
     if (this.isDecoding) {
       this.decodePending = true;
