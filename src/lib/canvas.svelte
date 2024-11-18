@@ -58,6 +58,11 @@
 					}
 				};
 			}
+
+			// this feels strange
+			if (!d.isSegmenting) {
+				segmentation.reset_mask();
+			}
 		}
 		segmentation.maskCanvas = segmentationCanvas;
 	});
@@ -280,10 +285,6 @@
 				clickOutsideDraggable = false;
 			}
 		}
-
-		if (clickOutsideDraggable) {
-			segmentation.reset();
-		}
 	};
 </script>
 
@@ -347,7 +348,7 @@
 					<button
 						onclick={async () => {
 							d.isSegmenting = false;
-							segmentation.reset();
+							segmentation.reset_mask();
 						}}>cancel</button
 					>
 					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>

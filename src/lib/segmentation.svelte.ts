@@ -43,12 +43,9 @@ export class Segmentation {
     this.samModelId = samModelId
   }
 
-  reset() {
+  reset_mask() {
     this.lastPoints = [];
-    this.isEncoding = false;
-    this.isDecoding = false;
     this.isMultiMaskMode = false;
-    this.decodePending = false;
   }
 
   async setup_sam_model() {
@@ -172,7 +169,6 @@ export class Segmentation {
     // Copy the image pixel data to the cut canvas
     const maskPixelData = maskImageData.data;
 
-    // TODO: maybe resize data?
     const imagePixelData = this.imageInput.data;
     for (let i = 0; i < w * h; ++i) {
       const sourceOffset = 3 * i; // RGB
@@ -183,6 +179,9 @@ export class Segmentation {
         for (let j = 0; j < 3; ++j) {
           maskPixelData[targetOffset + j] = imagePixelData[sourceOffset + j];
         }
+
+        // Set alpha value to 255 for full opacity 
+        maskPixelData[targetOffset + 3] = 255;
       }
     }
     cutContext.putImageData(maskImageData, 0, 0);
