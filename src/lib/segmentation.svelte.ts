@@ -144,10 +144,10 @@ export class Segmentation {
     for (let i = 0; i < pixelData.length; ++i) {
       if (mask.data[numMasks * i + bestIndex] === 1) {
         const offset = 4 * i;
-        pixelData[offset] = 0; // red
-        pixelData[offset + 1] = 114; // green
-        pixelData[offset + 2] = 189; // blue
-        pixelData[offset + 3] = 255; // alpha
+        pixelData[offset] = 100; // red
+        pixelData[offset + 1] = 0; // green
+        pixelData[offset + 2] = 0; // blue
+        pixelData[offset + 3] = 100; // alpha
       }
     }
 
