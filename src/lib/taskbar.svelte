@@ -77,7 +77,11 @@
 			bind:this={uploadImageGifInput}
 			onchange={() => {
 				for (let f of uploadImageGifInput!.files!) {
-					processFileAndAddDraggable(f);
+					if (f.type.startsWith('image/gif')) {
+						processFileAndAddDraggable(f, 'gif');
+					} else if (f.type.startsWith('image')) {
+						processFileAndAddDraggable(f, 'img');
+					}
 				}
 			}}
 		/>
