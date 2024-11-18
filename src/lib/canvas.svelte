@@ -368,7 +368,7 @@
 					>
 				{:else}
 					<button
-						style="background-image: url('x-button.png')"
+						style="background-image: url('windows-xp-icon-x-button.png')"
 						aria-label="delete"
 						onclick={() => {
 							deleteSelectedMedia();
@@ -376,14 +376,14 @@
 					>
 					</button>
 					<button
-						style="background-image: url('send-to-back.png')"
+						style="background-image: url('windows-xp-icon-send-to-back.png')"
 						aria-label="send-to-back"
 						onclick={() => {
 							d.z = getMinZIndex() - 1;
 						}}
 					></button>
 					<button
-						style="background-image: url('send-to-front.png')"
+						style="background-image: url('windows-xp-icon-send-to-front.png')"
 						aria-label="send-to-front"
 						onclick={() => {
 							d.z = getMaxZIndex() + 1;
