@@ -209,6 +209,8 @@ export class Segmentation {
     console.log(cutCanvas.width, cutCanvas.height)
     cutContext.putImageData(maskImageData, 0, 0);
 
+    this.clearPointsAndMask();
+
     // Download image
     return { imageUrl: URL.createObjectURL(await cutCanvas.convertToBlob()), width: cutCanvas.width, height: cutCanvas.height };
   }
