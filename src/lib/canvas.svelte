@@ -44,6 +44,7 @@
 	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
 	addDraggable('gif', 'sphere.gif', 942, 185, 200, 200);
 	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
+	addDraggable('img', 'frieren.webp', 1000, 100, 1280, 640);
 	addDraggable(
 		'text',
 		"we're all just walking eachother home",
@@ -282,12 +283,18 @@
 
 	const handleWindowMouseDown = (event: MouseEvent) => {
 		const target = event.target as HTMLElement;
+		let clickOutsideDraggable = true;
 		for (const d of draggables) {
 			if (target.closest('.draggable-container') !== d.containerEl) {
 				d.isSelected = false;
 				d.isSegmenting = false;
-				segmentation.reset();
+			} else {
+				clickOutsideDraggable = false;
 			}
+		}
+
+		if (clickOutsideDraggable) {
+			segmentation.reset();
 		}
 	};
 </script>
