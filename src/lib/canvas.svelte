@@ -132,11 +132,14 @@
 		draggables = draggables.filter((d) => d.isSelected === false);
 	}
 
-	function unselectSelectedMedia() {
-		const selectedMedia = draggables.find((d) => d.isSelected);
-		if (selectedMedia) {
-			selectedMedia.isSelected = false;
+	function unselectSelectedDraggable(): Draggable | null {
+		const selectedDraggable = draggables.find((d) => d.isSelected);
+		if (selectedDraggable) {
+			selectedDraggable.isSelected = false;
+			selectedDraggable.isSegmenting = false;
+			return selectedDraggable;
 		}
+		return null;
 	}
 
 	function anyDraggablesAreEditing(): Boolean {
@@ -183,7 +186,7 @@
 				event.preventDefault();
 				break;
 			case event.key === 'Escape':
-				unselectSelectedMedia();
+				unselectSelectedDraggable();
 				event.preventDefault();
 				break;
 		}
