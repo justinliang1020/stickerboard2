@@ -454,6 +454,10 @@
 		margin-left: 3px;
 	}
 
+	.draggable-title-bar button:hover {
+		filter: brightness(150%);
+	}
+
 	.draggable-container {
 		display: inline-block;
 		user-select: none;
