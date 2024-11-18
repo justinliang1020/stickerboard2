@@ -286,6 +286,7 @@
 			if (target.closest('.draggable-container') !== d.containerEl) {
 				d.isSelected = false;
 				d.isSegmenting = false;
+				segmentation.reset();
 			}
 		}
 	};
