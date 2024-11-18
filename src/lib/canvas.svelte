@@ -41,19 +41,7 @@
 	let segmentationCanvas: HTMLCanvasElement | undefined = $state();
 
 	// NOTE: must manually set image dimnensions
-	addDraggable('img', 'windows-spiral.png', 330, 135, 540, 352);
-	addDraggable('gif', 'sphere.gif', 942, 185, 200, 200);
-	addDraggable('img', 'spiral-sand.jpg', 25, 159, 350, 285);
-	addDraggable('img', 'frieren.webp', 1000, 100, 1280, 640);
-	addDraggable(
-		'text',
-		"we're all just walking eachother home",
-		// 'Being with you and not being with you is the only way I have to measure time',
-		56,
-		284,
-		300,
-		300
-	);
+	addDraggable('img', 'frieren.webp', 100, 100, 640, 320);
 
 	$effect(() => {
 		for (const d of draggables) {
