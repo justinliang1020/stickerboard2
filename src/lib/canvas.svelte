@@ -346,11 +346,13 @@
 			<div class="draggable-title-bar">
 				{#if d.isSegmenting}
 					<button
+						style="background-image: url('windows-xp-icon-go-back.png')"
+						aria-label="go-back"
 						onclick={async () => {
 							d.isSegmenting = false;
 							segmentation.reset_mask();
-						}}>cancel</button
-					>
+						}}
+					></button>
 					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
 					<button
 						onclick={async () => {
