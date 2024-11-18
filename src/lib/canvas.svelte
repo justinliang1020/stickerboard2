@@ -353,7 +353,11 @@
 							segmentation.reset_mask();
 						}}
 					></button>
-					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
+					<button
+						style="background-image: url('windows-xp-icon-clear.png')"
+						aria-label="create"
+						onclick={() => segmentation.clearPointsAndMask()}
+					></button>
 					<button
 						style="background-image: url('windows-xp-icon-plus.png')"
 						aria-label="create"
