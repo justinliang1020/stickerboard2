@@ -355,6 +355,8 @@
 					></button>
 					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
 					<button
+						style="background-image: url('windows-xp-icon-plus.png')"
+						aria-label="create"
 						onclick={async () => {
 							const cutoutImage = await segmentation.createCutOut();
 							if (!d.imgEl || !cutoutImage) {
@@ -366,8 +368,8 @@
 							if (cutoutImage) {
 								addDraggable('img', cutoutImage.imageUrl, 0, 0, scaledWidth, scaledHeight, false);
 							}
-						}}>create</button
-					>
+						}}
+					></button>
 				{:else}
 					<button
 						style="background-image: url('windows-xp-icon-x-button.png')"
