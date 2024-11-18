@@ -170,11 +170,22 @@ export class Segmentation {
     const maskPixelData = maskImageData.data;
 
     const imagePixelData = this.imageInput.data;
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
     for (let i = 0; i < w * h; ++i) {
       const sourceOffset = 3 * i; // RGB
       const targetOffset = 4 * i; // RGBA
+      let x = i % w
+      let y = Math.floor(i / w)
 
       if (maskPixelData[targetOffset + 3] > 0) {
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x);
+        maxY = Math.max(maxY, y);
+
         // Only copy opaque pixels
         for (let j = 0; j < 3; ++j) {
           maskPixelData[targetOffset + j] = imagePixelData[sourceOffset + j];
@@ -184,10 +195,22 @@ export class Segmentation {
         maskPixelData[targetOffset + 3] = 255;
       }
     }
+
+    // resize to elminate transparent pixels
+    for (let i = 0; i < w * h; ++i) {
+      const targetOffset = 4 * i; // RGBA
+      const minOffset = (minY * w + minX) * 4;
+      for (let j = 0; j < 4; ++j) {
+        maskPixelData[targetOffset + j - minOffset] = maskPixelData[targetOffset + j]
+      }
+    }
+    cutCanvas.width = maxX - minX;
+    cutCanvas.height = maxY - minY;
+    console.log(cutCanvas.width, cutCanvas.height)
     cutContext.putImageData(maskImageData, 0, 0);
 
     // Download image
-    return URL.createObjectURL(await cutCanvas.convertToBlob());
+    return { imageUrl: URL.createObjectURL(await cutCanvas.convertToBlob()), width: cutCanvas.width, height: cutCanvas.height };
   }
 
   clearPointsAndMask() {

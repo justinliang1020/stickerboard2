@@ -354,9 +354,15 @@
 					<button onclick={() => segmentation.clearPointsAndMask()}>clear</button>
 					<button
 						onclick={async () => {
-							const cutoutImageUrl = await segmentation.createCutOut();
-							if (cutoutImageUrl) {
-								addDraggable('img', cutoutImageUrl, 0, 0, d.width, d.height, false);
+							const cutoutImage = await segmentation.createCutOut();
+							if (!d.imgEl || !cutoutImage) {
+								console.error("error: couldn't cutout image");
+								return;
+							}
+							const scaledWidth = (cutoutImage.width * d.width) / d.imgEl.naturalWidth;
+							const scaledHeight = (cutoutImage.height * d.height) / d.imgEl.naturalHeight;
+							if (cutoutImage) {
+								addDraggable('img', cutoutImage.imageUrl, 0, 0, scaledWidth, scaledHeight, false);
 							}
 						}}>create</button
 					>
