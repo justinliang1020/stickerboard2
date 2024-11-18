@@ -391,12 +391,13 @@
 					></button>
 					{#if d.mediaFormat === 'img'}
 						<button
+							style="background-image: url('windows-xp-icon-segment-cut.png');"
+							aria-label="segment"
 							onclick={async () => {
 								d.isSegmenting = true;
 								await segmentation.encode(d.src);
 							}}
 						>
-							segment
 						</button>
 					{/if}
 				{/if}
@@ -423,9 +424,9 @@
 		top: -30px;
 		left: -3px;
 		width: calc(100% - 3px);
-		height: 20px;
+		height: 28px;
 		border-radius: 5px 5px 0 0;
-		padding: 5px 5px;
+		padding: 2px 5px;
 		background: linear-gradient(
 			to bottom,
 			#245edb 0%,
