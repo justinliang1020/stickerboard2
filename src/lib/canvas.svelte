@@ -84,6 +84,11 @@
 		autoscale: boolean = true
 	) {
 		const z = getMaxZIndex() + 1;
+		// hack
+		if (mediaFormat == 'text') {
+			width = 200;
+			height = 100;
+		}
 		draggables.push({
 			mediaFormat,
 			src,
