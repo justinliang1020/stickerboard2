@@ -33,7 +33,7 @@ export class Segmentation {
   samModelId: string;
   isDecoding: boolean = false;
   isEncoding: boolean = $state(false);
-  isMultiMaskMode: boolean = false;
+  isMultiMaskMode: boolean = $state(false);
   decodePending: boolean = false;
   maskCanvas?: HTMLCanvasElement = $state();
   maskContext = $derived(this.maskCanvas?.getContext("2d"))

@@ -358,12 +358,14 @@
 					></button>
 					<button
 						style="background-image: url('windows-xp-icon-clear.png')"
-						aria-label="create"
+						aria-label="clear"
+						disabled={!segmentation.isMultiMaskMode}
 						onclick={() => segmentation.clearPointsAndMask()}
 					></button>
 					<button
 						style="background-image: url('windows-xp-icon-plus.png')"
 						aria-label="create"
+						disabled={!segmentation.isMultiMaskMode}
 						onclick={async () => {
 							const cutoutImage = await segmentation.createCutOut();
 							if (!d.imgEl || !cutoutImage) {
@@ -468,6 +470,11 @@
 
 	.draggable-title-bar button:hover {
 		filter: brightness(150%);
+	}
+
+	.draggable-title-bar button:disabled {
+		filter: brightness(60%);
+		cursor: default;
 	}
 
 	.draggable-container {
