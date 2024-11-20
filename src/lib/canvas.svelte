@@ -595,5 +595,6 @@
 		overflow: hidden;
 		line-height: inherit;
 		font-weight: bold;
+		caret-color: #00ffff;
 	}
 </style>
