@@ -197,14 +197,27 @@
 		}
 	};
 
-	const handleMouseDownDraggable = (event: MouseEvent, d: Draggable) => {
+	const handleDraggablePointerStart = (event: MouseEvent | TouchEvent, d: Draggable) => {
 		const target = event.target as HTMLElement;
+
+		let clientX;
+		let clientY;
+		if (event instanceof MouseEvent) {
+			clientX = event.clientX;
+			clientY = event.clientY;
+		} else if (event instanceof TouchEvent) {
+			clientX = event.touches[0].clientX;
+			clientY = event.touches[0].clientY;
+		} else {
+			return;
+		}
+
 		if (target.classList.contains('resize-handle')) {
 			d.isDragging = false;
 			d.isResizing = true;
 			d.activeCorner = target.dataset.corner || null;
-			mouseDownInfo.startX = event.clientX;
-			mouseDownInfo.startY = event.clientY;
+			mouseDownInfo.startX = clientX;
+			mouseDownInfo.startY = clientY;
 			mouseDownInfo.startWidth = d.width;
 			mouseDownInfo.startHeight = d.height;
 		} else if (d.isSegmenting) {
@@ -212,22 +225,35 @@
 		} else {
 			d.isSelected = true;
 			d.isDragging = true;
-			mouseDownInfo.startX = event.clientX - d.x;
-			mouseDownInfo.startY = event.clientY - d.y;
+			mouseDownInfo.startX = clientX - d.x;
+			mouseDownInfo.startY = clientY - d.y;
 		}
 	};
 
-	const handleMouseMove = (event: MouseEvent) => {
+	const handleWindowPointerMove = (event: MouseEvent | TouchEvent) => {
 		const d: Draggable | null = draggables.find((d) => d.isSelected) || null;
 		if (d === null) {
 			return;
 		}
+
+		let clientX;
+		let clientY;
+		if (event instanceof MouseEvent) {
+			clientX = event.clientX;
+			clientY = event.clientY;
+		} else if (event instanceof TouchEvent) {
+			clientX = event.touches[0].clientX;
+			clientY = event.touches[0].clientY;
+		} else {
+			return;
+		}
+
 		if (d.isDragging) {
-			d.x = event.clientX - mouseDownInfo.startX;
-			d.y = event.clientY - mouseDownInfo.startY;
+			d.x = clientX - mouseDownInfo.startX;
+			d.y = clientY - mouseDownInfo.startY;
 		} else if (d.isResizing && d.activeCorner) {
-			const dx = event.clientX - mouseDownInfo.startX;
-			const dy = event.clientY - mouseDownInfo.startY;
+			const dx = clientX - mouseDownInfo.startX;
+			const dy = clientY - mouseDownInfo.startY;
 			let ratio: number;
 			const originalWidth = d.width;
 			const originalHeight = d.height;
@@ -273,7 +299,7 @@
 		}
 	};
 
-	const handleMouseUp = () => {
+	const handleWindowPointerUp = () => {
 		// TODO: unsure
 		for (const d of draggables) {
 			d.isDragging = false;
@@ -282,7 +308,7 @@
 		}
 	};
 
-	const handleWindowMouseDown = (event: MouseEvent) => {
+	const handleWindowPointerStart = (event: MouseEvent | TouchEvent) => {
 		const target = event.target as HTMLElement;
 		let clickOutsideDraggable = true;
 		for (const d of draggables) {
@@ -297,11 +323,14 @@
 </script>
 
 <svelte:window
-	on:paste={handlePaste}
-	on:keydown={handleKeyDown}
-	on:mousemove={handleMouseMove}
-	on:mouseup={handleMouseUp}
-	on:mousedown={handleWindowMouseDown}
+	onpaste={handlePaste}
+	onkeydown={handleKeyDown}
+	onmousemove={handleWindowPointerMove}
+	onmouseup={handleWindowPointerUp}
+	onmousedown={handleWindowPointerStart}
+	ontouchmove={handleWindowPointerMove}
+	ontouchend={handleWindowPointerUp}
+	ontouchstart={handleWindowPointerStart}
 />
 
 {#each draggables as d (d)}
@@ -311,7 +340,8 @@
 		class:selected={d.isSelected}
 		style="position: absolute; left: {d.x}px; top: {d.y}px; z-index: {d.z}; width: {d.width}px; height: {d.height}px;"
 		style:cursor={d.isSegmenting ? 'pointer' : 'grab'}
-		onmousedown={(e) => handleMouseDownDraggable(e, d)}
+		onmousedown={(e) => handleDraggablePointerStart(e, d)}
+		ontouchstart={(e) => handleDraggablePointerStart(e, d)}
 		bind:this={d.containerEl}
 	>
 		{#if d.mediaFormat === 'img' || d.mediaFormat === 'gif'}
