@@ -221,8 +221,6 @@
 			mouseDownInfo.startY = clientY;
 			mouseDownInfo.startWidth = d.width;
 			mouseDownInfo.startHeight = d.height;
-		} else if (d.isSegmenting) {
-			//TODO: isSegmenting code
 		} else {
 			d.isSelected = true;
 			d.isDragging = true;
