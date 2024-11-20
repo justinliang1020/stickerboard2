@@ -43,6 +43,7 @@
 	let onSelectAudio: HTMLAudioElement;
 	let onDeselectAudio: HTMLAudioElement;
 	let onNewDraggableAudio: HTMLAudioElement;
+	let onDeleteDraggableAudio: HTMLAudioElement;
 
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'frieren.webp', 100, 100, 640, 320);
@@ -77,6 +78,7 @@
 		onSelectAudio = new Audio('audio/slap-1.mp3');
 		onDeselectAudio = new Audio('audio/thump-1.mp3');
 		onNewDraggableAudio = new Audio('audio/drop-1.mp3');
+		onDeleteDraggableAudio = new Audio('audio/paper-crumble-1.mp3');
 		//TODO: call this in a separate thread to not block the main thread/allow images to be clicked befeore this is loaded
 		await segmentation.setup_sam_model();
 	});
@@ -148,6 +150,7 @@
 
 	function deleteSelectedMedia() {
 		draggables = draggables.filter((d) => d.isSelected === false);
+		onDeleteDraggableAudio.play();
 	}
 
 	function deselectSelectedDraggable() {
