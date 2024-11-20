@@ -175,6 +175,9 @@
 {/if}
 
 <style>
+	span {
+		white-space: nowrap;
+	}
 	.taskbar {
 		position: fixed;
 		bottom: 0;
@@ -415,5 +418,16 @@
 		width: 100%;
 		height: 100px;
 		padding: 0;
+	}
+
+	@media (max-width: 600px) {
+		.start-button {
+			font-size: 9px;
+			margin-right: 0;
+		}
+
+		.application-button {
+			font-size: 10px;
+		}
 	}
 </style>
