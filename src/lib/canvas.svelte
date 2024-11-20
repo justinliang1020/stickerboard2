@@ -153,13 +153,10 @@
 		onDeleteDraggableAudio.play();
 	}
 
-	function deselectSelectedDraggable() {
-		const d = draggables.find((d) => d.isSelected);
-		if (d) {
-			d.isSelected = false;
-			d.isSegmenting = false;
-			onDeselectAudio.play();
-		}
+	function deselectDraggable(d: Draggable) {
+		d.isSelected = false;
+		d.isSegmenting = false;
+		onDeselectAudio.play();
 	}
 
 	function anyDraggablesAreEditing(): Boolean {
@@ -208,7 +205,7 @@
 			case event.key === 'Escape':
 				const d = draggables.find((d) => d.isSelected);
 				if (d) {
-					deselectSelectedDraggable();
+					deselectDraggable(d);
 				}
 				event.preventDefault();
 				break;
@@ -296,7 +293,10 @@
 	const handleWindowPointerStart = (event: MouseEvent | TouchEvent) => {
 		const target = event.target as HTMLElement;
 		if (!target.closest('.draggable-container')) {
-			deselectSelectedDraggable();
+			const d = draggables.find((d) => d.isSelected);
+			if (d) {
+				deselectDraggable(d);
+			}
 		} else {
 			let d;
 			for (let di of draggables) {
@@ -329,13 +329,18 @@
 				mouseDownInfo.startWidth = d.width;
 				mouseDownInfo.startHeight = d.height;
 			} else {
-				deselectSelectedDraggable();
-				d.isSelected = true;
+				const selectedDraggable = draggables.find((d1) => d1.isSelected);
+				if (!selectedDraggable) {
+					d.isSelected = true;
+					onSelectAudio.play();
+				} else if (selectedDraggable != d) {
+					deselectDraggable(selectedDraggable);
+					d.isSelected = true;
+					onSelectAudio.play();
+				}
 				d.isDragging = true;
 				mouseDownInfo.startX = clientX - d.x;
 				mouseDownInfo.startY = clientY - d.y;
-
-				onSelectAudio.play();
 			}
 		}
 	};
