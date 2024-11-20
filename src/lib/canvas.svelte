@@ -469,12 +469,13 @@
 
 	.draggable-title-bar {
 		position: absolute;
-		top: -30px;
+		top: -28px;
 		left: -3px;
-		width: calc(100% - 3px);
+		width: calc(100% - 25px);
 		height: 28px;
 		border-radius: 5px 5px 0 0;
-		padding: 2px 5px;
+		padding: 2px 25px 2px 5px;
+
 		background: linear-gradient(
 			to bottom,
 			#245edb 0%,
