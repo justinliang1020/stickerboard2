@@ -40,6 +40,10 @@
 	};
 	let segmentationCanvas: HTMLCanvasElement | undefined = $state();
 
+	let onSelectAudio: HTMLAudioElement;
+	let onDeselectAudio: HTMLAudioElement;
+	let onNewDraggableAudio: HTMLAudioElement;
+
 	// NOTE: must manually set image dimnensions
 	addDraggable('img', 'frieren.webp', 100, 100, 640, 320);
 
@@ -69,6 +73,10 @@
 	});
 
 	onMount(async () => {
+		// setup audios
+		onSelectAudio = new Audio('audio/slap-1.mp3');
+		onDeselectAudio = new Audio('audio/thump-1.mp3');
+		onNewDraggableAudio = new Audio('audio/drop-1.mp3');
 		//TODO: call this in a separate thread to not block the main thread/allow images to be clicked befeore this is loaded
 		await segmentation.setup_sam_model();
 	});
@@ -109,6 +117,10 @@
 			activeCorner: null,
 			autoscale
 		});
+
+		if (onNewDraggableAudio) {
+			onNewDraggableAudio.play();
+		}
 	}
 
 	function getMaxZIndex(): number {
@@ -138,14 +150,13 @@
 		draggables = draggables.filter((d) => d.isSelected === false);
 	}
 
-	function unselectSelectedDraggable(): Draggable | null {
-		const selectedDraggable = draggables.find((d) => d.isSelected);
-		if (selectedDraggable) {
-			selectedDraggable.isSelected = false;
-			selectedDraggable.isSegmenting = false;
-			return selectedDraggable;
+	function deselectSelectedDraggable() {
+		const d = draggables.find((d) => d.isSelected);
+		if (d) {
+			d.isSelected = false;
+			d.isSegmenting = false;
+			onDeselectAudio.play();
 		}
-		return null;
 	}
 
 	function anyDraggablesAreEditing(): Boolean {
@@ -192,40 +203,12 @@
 				event.preventDefault();
 				break;
 			case event.key === 'Escape':
-				unselectSelectedDraggable();
+				const d = draggables.find((d) => d.isSelected);
+				if (d) {
+					deselectSelectedDraggable();
+				}
 				event.preventDefault();
 				break;
-		}
-	};
-
-	const handleDraggablePointerStart = (event: MouseEvent | TouchEvent, d: Draggable) => {
-		const target = event.target as HTMLElement;
-
-		let clientX;
-		let clientY;
-		if (event instanceof MouseEvent) {
-			clientX = event.clientX;
-			clientY = event.clientY;
-		} else if (event instanceof TouchEvent) {
-			clientX = event.touches[0].clientX;
-			clientY = event.touches[0].clientY;
-		} else {
-			return;
-		}
-
-		if (target.classList.contains('resize-handle')) {
-			d.isDragging = false;
-			d.isResizing = true;
-			d.activeCorner = target.dataset.corner || null;
-			mouseDownInfo.startX = clientX;
-			mouseDownInfo.startY = clientY;
-			mouseDownInfo.startWidth = d.width;
-			mouseDownInfo.startHeight = d.height;
-		} else {
-			d.isSelected = true;
-			d.isDragging = true;
-			mouseDownInfo.startX = clientX - d.x;
-			mouseDownInfo.startY = clientY - d.y;
 		}
 	};
 
@@ -309,13 +292,47 @@
 
 	const handleWindowPointerStart = (event: MouseEvent | TouchEvent) => {
 		const target = event.target as HTMLElement;
-		let clickOutsideDraggable = true;
-		for (const d of draggables) {
-			if (target.closest('.draggable-container') !== d.containerEl) {
-				d.isSelected = false;
-				d.isSegmenting = false;
+		if (!target.closest('.draggable-container')) {
+			deselectSelectedDraggable();
+		} else {
+			let d;
+			for (let di of draggables) {
+				if (target.closest('.draggable-container') == di.containerEl) {
+					d = di;
+				}
+			}
+			if (!d) {
+				return;
+			}
+
+			let clientX;
+			let clientY;
+			if (event instanceof MouseEvent) {
+				clientX = event.clientX;
+				clientY = event.clientY;
+			} else if (event instanceof TouchEvent) {
+				clientX = event.touches[0].clientX;
+				clientY = event.touches[0].clientY;
 			} else {
-				clickOutsideDraggable = false;
+				return;
+			}
+
+			if (target.classList.contains('resize-handle')) {
+				d.isDragging = false;
+				d.isResizing = true;
+				d.activeCorner = target.dataset.corner || null;
+				mouseDownInfo.startX = clientX;
+				mouseDownInfo.startY = clientY;
+				mouseDownInfo.startWidth = d.width;
+				mouseDownInfo.startHeight = d.height;
+			} else {
+				deselectSelectedDraggable();
+				d.isSelected = true;
+				d.isDragging = true;
+				mouseDownInfo.startX = clientX - d.x;
+				mouseDownInfo.startY = clientY - d.y;
+
+				onSelectAudio.play();
 			}
 		}
 	};
@@ -339,8 +356,6 @@
 		class:selected={d.isSelected}
 		style="position: absolute; left: {d.x}px; top: {d.y}px; z-index: {d.z}; width: {d.width}px; height: {d.height}px;"
 		style:cursor={d.isSegmenting ? 'pointer' : 'grab'}
-		onmousedown={(e) => handleDraggablePointerStart(e, d)}
-		ontouchstart={(e) => handleDraggablePointerStart(e, d)}
 		bind:this={d.containerEl}
 	>
 		{#if d.mediaFormat === 'img' || d.mediaFormat === 'gif'}
