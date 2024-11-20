@@ -470,7 +470,7 @@
 		position: absolute;
 		top: -28px;
 		left: -3px;
-		width: calc(100% - 25px);
+		width: max(calc(100% - 25px), 180px);
 		height: 28px;
 		border-radius: 5px 5px 0 0;
 		padding: 2px 25px 2px 5px;
