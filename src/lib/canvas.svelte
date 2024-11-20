@@ -44,6 +44,7 @@
 	addDraggable('img', 'frieren.webp', 100, 100, 640, 320);
 
 	$effect(() => {
+		// NOTE: initial draggables aren't autoscaled since they are server-side-rendered, thus their state is not changed in the effect rune
 		for (const d of draggables) {
 			if (d.imgEl) {
 				d.imgEl.onload = function () {
