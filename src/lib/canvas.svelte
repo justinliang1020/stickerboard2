@@ -464,6 +464,7 @@
 	:global(body) {
 		background: black;
 		overflow: hidden;
+		overscroll-behavior: none;
 	}
 
 	.draggable-title-bar {
