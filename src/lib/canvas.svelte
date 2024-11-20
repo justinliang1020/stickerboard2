@@ -363,6 +363,7 @@
           "
 					onmousedown={(e) => segmentation.handleContainerMouseDown(e)}
 					onmousemove={(e) => segmentation.handleContainerMouseMove(e)}
+					oncontextmenu={(e) => e.preventDefault()}
 				></div>
 				{#if segmentation.isEncoding}
 					<p style="color: white;">encoding...</p>
