@@ -598,4 +598,11 @@
 		font-weight: bold;
 		caret-color: #00ffff;
 	}
+
+	@media (max-width: 600px) {
+		.resize-handle {
+			width: 20px;
+			height: 20px;
+		}
+	}
 </style>
