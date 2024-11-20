@@ -343,7 +343,6 @@
 			<textarea
 				name=""
 				id=""
-				class="text"
 				bind:this={d.textAreaEl}
 				onfocusin={() => (d.isEditing = true)}
 				onfocusout={() => (d.isEditing = false)}>{d.src}</textarea
@@ -541,7 +540,7 @@
 		cursor: se-resize;
 	}
 
-	.text {
+	textarea {
 		width: 100%;
 		height: 100%;
 		margin: 0;
@@ -565,5 +564,6 @@
 		/* fix overflow to show without scrollbar */
 		overflow: hidden;
 		line-height: inherit;
+		font-weight: bold;
 	}
 </style>
