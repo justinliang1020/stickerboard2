@@ -141,7 +141,7 @@
 
 		<div class="menu-items">
 			<div class="left-panel">
-				<h2>filters (todo)</h2>
+				<h2>filters</h2>
 				<button class="menu-item" onclick={() => (imageFilter = 'none')}>
 					<img src="/intellectualizing-suffering.jpg" alt="deep fried" />
 					<span>no filter</span>
