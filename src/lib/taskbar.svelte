@@ -175,9 +175,7 @@
 		</div>
 
 		<div class="bottom-section">
-			<div class="menu-item">
-				<span>❓ Help</span>
-			</div>
+			<span>❓ by <a href="https://www.justinliang.me/">justin</a></span>
 		</div>
 	</div>
 {/if}
