@@ -2,8 +2,13 @@
 	import { onMount } from 'svelte';
 	let {
 		addDraggable,
-		processFileAndAddDraggable
-	}: { addDraggable: Function; processFileAndAddDraggable: Function } = $props();
+		processFileAndAddDraggable,
+		imageFilter = $bindable()
+	}: {
+		addDraggable: Function;
+		processFileAndAddDraggable: Function;
+		imageFilter: string;
+	} = $props();
 
 	let time = $state(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
 	let isStartMenuOpen = $state(false);
@@ -137,19 +142,22 @@
 		<div class="menu-items">
 			<div class="left-panel">
 				<h2>filters (todo)</h2>
-				<div class="menu-item">
+				<button class="menu-item" onclick={() => (imageFilter = 'none')}>
 					<img src="/intellectualizing-suffering.jpg" alt="deep fried" />
 					<span>no filter</span>
-				</div>
+				</button>
 				<hr class="menu-separator" />
-				<div class="menu-item">
+				<button
+					class="menu-item"
+					onclick={() => (imageFilter = 'brightness(1.2) contrast(3) saturate(3)')}
+				>
 					<img src="/deep-fried.png" alt="deep fried" />
 					<span>deep fried</span>
-				</div>
-				<div class="menu-item">
+				</button>
+				<button class="menu-item" onclick={() => (imageFilter = 'grayscale(100%)')}>
 					<img src="/black-and-white.jpeg" alt="black and white" />
 					<span>black and white</span>
-				</div>
+				</button>
 			</div>
 
 			<div class="right-panel">

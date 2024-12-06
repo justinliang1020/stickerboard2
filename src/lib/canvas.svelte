@@ -39,6 +39,7 @@
 		startHeight: 0
 	};
 	let segmentationCanvas: HTMLCanvasElement | undefined = $state();
+	let imageFilter = $state('none');
 
 	let onSelectAudio: HTMLAudioElement;
 	let onDeselectAudio: HTMLAudioElement;
@@ -375,6 +376,7 @@
 				class="draggable-image"
 				draggable="false"
 				bind:this={d.imgEl}
+				style={`filter: ${imageFilter};`}
 			/>
 			{#if d.isSegmenting}
 				<canvas class="segmentation-canvas" bind:this={segmentationCanvas}></canvas>
@@ -484,7 +486,7 @@
 	</div>
 {/each}
 
-<Taskbar {addDraggable} {processFileAndAddDraggable} />
+<Taskbar {addDraggable} {processFileAndAddDraggable} bind:imageFilter />
 
 <style>
 	:global(body) {
